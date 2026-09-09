@@ -66,7 +66,7 @@ Low-lying districts such as **Lat Phrao, Bang Khen, Don Mueang, Sai Mai, Watthan
 
 ## Map data
 
-The brief’s GitHub URL `https://raw.githubusercontent.com/apisit/thailand-geojson/master/bkk.json` returns **404**. This repo ships a Bangkok-only extract of [OpenGISData-Thailand](https://github.com/chingchai/OpenGISData-Thailand) at `/public/bkk-districts.json`, and will fall back to that project’s raw GeoJSON (filtered to `pro_code = 10`) if the local file is missing. Details: `docs/GEOJSON.md`.
+The map uses Esri World Dark Gray canvas tiles (no API key) plus the local Bangkok GeoJSON polygons. Carto's public `dark_all` tiles currently watermark "API KEY REQUIRED".
 
 ## API
 
