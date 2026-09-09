@@ -35,16 +35,15 @@ body {
   font-family: var(--font-sans);
 }
 
-.bkk-deck-tooltip.deck-tooltip,
-.deck-tooltip.bkk-deck-tooltip {
-  background: rgba(7, 17, 28, 0.94) !important;
-  border: 1px solid rgba(34, 211, 238, 0.35) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
-  color: #f8fafc !important;
+.bkk-deck-tooltip {
+  background: rgba(7, 17, 28, 0.94);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  color: #f8fafc;
   font-family: var(--font-sans);
   overflow: hidden;
-  padding: 0 !important;
+  padding: 0;
 }
 
 .bkk-tip {

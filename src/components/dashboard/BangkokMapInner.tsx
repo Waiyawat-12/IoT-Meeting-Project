@@ -109,12 +109,43 @@ export default function BangkokMapInner() {
     };
   }, []);
 
+  const [hoverTip, setHoverTip] = useState<{
+    x: number;
+    y: number;
+    nameEN: string;
+    nameTH: string;
+    score: number;
+  } | null>(null);
+
   const onDistrictClick = useCallback(
     (info: PickingInfo<DistrictFeature>) => {
       const id = info.object?.properties?.id;
       if (id) selectDistrict(id);
     },
     [selectDistrict],
+  );
+
+  const onDistrictHover = useCallback(
+    (info: PickingInfo<DistrictFeature>) => {
+      const id = info.object?.properties?.id;
+      if (!id) {
+        setHoverTip(null);
+        return;
+      }
+      const infoRow = scoreById.get(id);
+      if (!infoRow) {
+        setHoverTip(null);
+        return;
+      }
+      setHoverTip({
+        x: info.x,
+        y: info.y,
+        nameEN: infoRow.nameEN,
+        nameTH: infoRow.nameTH,
+        score: infoRow.score,
+      });
+    },
+    [scoreById],
   );
 
   const layers = useMemo(() => {
@@ -128,7 +159,7 @@ export default function BangkokMapInner() {
         extruded: true,
         filled: true,
         stroked: true,
-        wireframe: false,
+        wireframe: true,
         opacity: 0.85,
         getElevation: (feature) => {
           const score = scoreById.get(feature.properties?.id ?? "")?.score ?? 0;
@@ -158,6 +189,7 @@ export default function BangkokMapInner() {
         autoHighlight: true,
         highlightColor: HIGHLIGHT,
         onClick: onDistrictClick,
+        onHover: onDistrictHover,
         transitions: {
           getElevation: 400,
           getFillColor: 280,
@@ -174,28 +206,7 @@ export default function BangkokMapInner() {
         },
       }),
     ];
-  }, [geojson, onDistrictClick, scoreById, selectedId, weather]);
-
-  const getTooltip = useCallback(
-    ({ object }: PickingInfo<DistrictFeature>) => {
-      const id = object?.properties?.id;
-      if (!id) return null;
-      const info = scoreById.get(id);
-      if (!info) return null;
-      return {
-        html: `<div class="bkk-tip"><strong>${info.nameEN}</strong><span>${info.nameTH}</span><em>${info.score}%</em></div>`,
-        className: "bkk-deck-tooltip",
-        style: {
-          background: "transparent",
-          border: "none",
-          boxShadow: "none",
-          padding: "0",
-          color: "inherit",
-        },
-      };
-    },
-    [scoreById],
-  );
+  }, [geojson, onDistrictClick, onDistrictHover, scoreById, selectedId, weather]);
 
   return (
     <div className="relative h-full min-h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-[#0b0f1f]">
@@ -220,12 +231,24 @@ export default function BangkokMapInner() {
         }}
         layers={layers}
         effects={[lightingEffect]}
-        getTooltip={getTooltip}
+        pickingRadius={8}
         getCursor={({ isDragging, isHovering }) =>
           isDragging ? "grabbing" : isHovering ? "pointer" : "grab"
         }
         style={{ background: "transparent" }}
       />
+      {hoverTip ? (
+        <div
+          className="bkk-deck-tooltip pointer-events-none absolute z-20"
+          style={{ left: hoverTip.x + 14, top: hoverTip.y + 12 }}
+        >
+          <div className="bkk-tip">
+            <strong>{hoverTip.nameEN}</strong>
+            <span>{hoverTip.nameTH}</span>
+            <em>{hoverTip.score}%</em>
+          </div>
+        </div>
+      ) : null}
       {!geojson && !error ? (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[#0b0f1f]/70 text-sm text-cyan-100">
           Loading 3D Bangkok districts…
