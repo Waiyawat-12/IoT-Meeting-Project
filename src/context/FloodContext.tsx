@@ -14,7 +14,10 @@ interface FloodContextValue {
   rankedDistricts: DistrictRisk[];
   selectedId: string | null;
   selectedDistrict: DistrictRisk | null;
+  selectedRank: number | null;
   selectDistrict: (id: string | null) => void;
+  rankingsOpen: boolean;
+  setRankingsOpen: (open: boolean) => void;
   summary: ReturnType<typeof summarizeCity>;
 }
 
@@ -23,6 +26,7 @@ const FloodContext = React.createContext<FloodContextValue | null>(null);
 export function FloodProvider({ children }: { children: React.ReactNode }) {
   const [weather, setWeather] = React.useState<WeatherInputs>(DEFAULT_WEATHER);
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
+  const [rankingsOpen, setRankingsOpen] = React.useState(false);
 
   const rankedDistricts = React.useMemo(
     () => evaluateCity(DISTRICTS, weather),
@@ -39,6 +43,12 @@ export function FloodProvider({ children }: { children: React.ReactNode }) {
     [rankedDistricts, selectedId],
   );
 
+  const selectedRank = React.useMemo(() => {
+    if (!selectedId) return null;
+    const index = rankedDistricts.findIndex((d) => d.id === selectedId);
+    return index >= 0 ? index + 1 : null;
+  }, [rankedDistricts, selectedId]);
+
   const value = React.useMemo<FloodContextValue>(
     () => ({
       weather,
@@ -50,10 +60,21 @@ export function FloodProvider({ children }: { children: React.ReactNode }) {
       rankedDistricts,
       selectedId,
       selectedDistrict,
+      selectedRank,
       selectDistrict: setSelectedId,
+      rankingsOpen,
+      setRankingsOpen,
       summary,
     }),
-    [weather, rankedDistricts, selectedId, selectedDistrict, summary],
+    [
+      weather,
+      rankedDistricts,
+      selectedId,
+      selectedDistrict,
+      selectedRank,
+      rankingsOpen,
+      summary,
+    ],
   );
 
   return <FloodContext.Provider value={value}>{children}</FloodContext.Provider>;

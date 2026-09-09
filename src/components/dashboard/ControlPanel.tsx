@@ -20,23 +20,23 @@ export function ControlPanel() {
 
   return (
     <Card className="overflow-hidden">
-      <CardHeader className="border-b border-white/5">
+      <CardHeader className="border-b border-border">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-cyan-100">
-            <Gauge className="h-4 w-4 text-cyan-300" />
+          <CardTitle className="flex items-center gap-2 text-cyan-800 dark:text-cyan-100">
+            <Gauge className="h-4 w-4 text-cyan-600 dark:text-cyan-300" />
             Simulation &amp; Control
           </CardTitle>
           <Badge variant="cyan">Global</Badge>
         </div>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-muted">
           Rain inputs recalculate all 50 districts instantly.
         </p>
       </CardHeader>
       <CardContent className="space-y-5">
         <div>
           <div className="mb-2 flex items-center justify-between text-sm">
-            <span className="text-slate-300">Rain chance</span>
-            <span className="font-mono text-cyan-200">{weather.rainChance}%</span>
+            <span className="text-foreground/80">Rain chance</span>
+            <span className="font-mono text-cyan-700 dark:text-cyan-200">{weather.rainChance}%</span>
           </div>
           <Slider
             min={0}
@@ -50,11 +50,11 @@ export function ControlPanel() {
 
         <div>
           <div className="mb-2 flex items-center justify-between text-sm">
-            <span className="flex items-center gap-1.5 text-slate-300">
-              <Waves className="h-3.5 w-3.5 text-sky-300" />
+            <span className="flex items-center gap-1.5 text-foreground/80">
+              <Waves className="h-3.5 w-3.5 text-sky-600 dark:text-sky-300" />
               Rain intensity
             </span>
-            <span className="font-mono text-cyan-200">
+            <span className="font-mono text-cyan-700 dark:text-cyan-200">
               {weather.rainIntensity} mm/hr · {intensityLabel(weather.rainIntensity)}
             </span>
           </div>

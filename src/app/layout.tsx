@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Prompt } from "next/font/google";
+import { Providers } from "@/components/providers";
 import "./globals.css";
 
 const prompt = Prompt({
@@ -23,10 +24,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${prompt.variable} ${jetbrains.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`dark ${prompt.variable} ${jetbrains.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background font-sans text-foreground">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

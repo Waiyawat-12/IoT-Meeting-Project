@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { Activity, Droplets, Radio } from "lucide-react";
 import { useEffect, useState } from "react";
+import { DistrictSearch } from "@/components/dashboard/DistrictSearch";
+import { ThemeToggle } from "@/components/dashboard/ThemeToggle";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useFlood } from "@/context/FloodContext";
-import { RISK_LABELS } from "@/lib/floodEngine";
 
 export function DashboardHeader() {
-  const { summary } = useFlood();
+  const { summary, setRankingsOpen } = useFlood();
   const [now, setNow] = useState("--:--:--");
 
   useEffect(() => {
@@ -31,36 +33,61 @@ export function DashboardHeader() {
   const cityLevel = summary.maxRisk.riskLevel;
 
   return (
-    <header className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-slate-950/70 px-4 py-3 backdrop-blur-xl">
-      <div className="flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-400/15 ring-1 ring-cyan-300/40">
-          <Droplets className="h-5 w-5 text-cyan-300" />
+    <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-3 border-b border-border bg-header px-4 backdrop-blur-xl">
+      <div className="flex min-w-0 items-center gap-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-cyan-400/15 ring-1 ring-cyan-500/40">
+          <Droplets className="h-5 w-5 text-cyan-600 dark:text-cyan-300" />
         </div>
-        <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-300/80">
+        <div className="min-w-0 hidden sm:block">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-700 dark:text-cyan-300/80">
             BMA Flood Ops · Smart City Prototype
           </p>
-          <h1 className="text-lg font-semibold leading-tight text-white sm:text-xl">
+          <h1 className="truncate text-base font-semibold leading-tight text-foreground lg:text-lg">
             Bangkok Smart Flood Risk
-            <span className="ml-2 text-cyan-200/80">ระบบพยากรณ์น้ำท่วมกรุงเทพฯ</span>
+            <span className="ml-2 hidden text-cyan-800/80 dark:text-cyan-200/80 xl:inline">
+              ระบบพยากรณ์น้ำท่วมกรุงเทพฯ
+            </span>
           </h1>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <Badge variant="cyan" className="gap-1.5 normal-case tracking-normal">
+      <div className="mx-auto hidden min-w-0 flex-1 justify-center md:flex">
+        <DistrictSearch />
+      </div>
+
+      <div className="ml-auto flex shrink-0 items-center gap-2">
+        <div className="w-36 md:hidden">
+          <DistrictSearch className="max-w-none" />
+        </div>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() => setRankingsOpen(true)}
+          aria-label="Open district rankings"
+        >
+          🏆 Rankings
+        </Button>
+        <ThemeToggle />
+        <Badge
+          variant="cyan"
+          className="hidden gap-1.5 normal-case tracking-normal lg:inline-flex"
+        >
           <Radio className="h-3 w-3 animate-pulse" />
           Live sim · ICT+07 {now}
         </Badge>
-        <Badge variant={cityLevel} className="gap-1.5 normal-case tracking-normal">
+        <Badge
+          variant={cityLevel}
+          className="hidden gap-1.5 normal-case tracking-normal sm:inline-flex"
+        >
           <Activity className="h-3 w-3" />
-          City peak {RISK_LABELS[cityLevel].en} {summary.maxRisk.riskScore}%
+          Peak {summary.maxRisk.riskScore}%
         </Badge>
         <Link
           href="/architecture"
-          className="rounded-full border border-white/10 px-3 py-1 text-[11px] font-medium text-slate-300 hover:bg-white/8"
+          className="hidden rounded-full border border-border px-3 py-1 text-[11px] font-medium text-muted hover:bg-slate-900/5 hover:text-foreground dark:hover:bg-white/8 xl:inline"
         >
-          System architecture
+          Architecture
         </Link>
       </div>
     </header>

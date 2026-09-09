@@ -11,6 +11,7 @@ import {
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { DeckGL } from "@deck.gl/react";
 import type { Feature, FeatureCollection, Geometry } from "geojson";
+import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFlood } from "@/context/FloodContext";
 import { getRiskColor } from "@/lib/floodEngine";
@@ -29,28 +30,24 @@ const BANGKOK_VIEW: MapViewState = {
 };
 
 const FILL_ALPHA = Math.round(0.85 * 255);
-const LINE_COLOR: [number, number, number, number] = [255, 255, 255, 51];
-const LINE_COLOR_SELECTED: [number, number, number, number] = [165, 243, 252, 230];
+const LINE_COLOR_DARK: [number, number, number, number] = [255, 255, 255, 51];
+const LINE_COLOR_LIGHT: [number, number, number, number] = [15, 23, 42, 90];
+const LINE_COLOR_SELECTED: [number, number, number, number] = [8, 145, 178, 230];
 const HIGHLIGHT: [number, number, number, number] = [255, 255, 255, 48];
 
-const MAP_VIEW = new MapView({
-  id: "map",
-  repeat: false,
-  farZMultiplier: 4,
-  clearColor: [11, 15, 31, 255],
-});
-
-const lightingEffect = new LightingEffect({
-  ambient: new AmbientLight({
-    color: [186, 214, 232],
-    intensity: 0.72,
-  }),
-  dir: new DirectionalLight({
-    color: [255, 255, 255],
-    intensity: 1.35,
-    direction: [-4, -9, -6],
-  }),
-});
+function createLighting(isDark: boolean) {
+  return new LightingEffect({
+    ambient: new AmbientLight({
+      color: isDark ? [186, 214, 232] : [255, 255, 255],
+      intensity: isDark ? 0.72 : 0.95,
+    }),
+    dir: new DirectionalLight({
+      color: [255, 255, 255],
+      intensity: isDark ? 1.35 : 1.1,
+      direction: [-4, -9, -6],
+    }),
+  });
+}
 
 type DistrictProps = {
   id?: string;
@@ -71,10 +68,27 @@ function hexToRgb(hex: string): [number, number, number] {
 
 export default function BangkokMapInner() {
   const { rankedDistricts, selectedId, selectDistrict, weather } = useFlood();
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme !== "light";
+  const mapClearColor = isDark
+    ? ([9, 9, 11, 255] as [number, number, number, number])
+    : ([226, 232, 240, 255] as [number, number, number, number]);
+  const lightingEffect = useMemo(() => createLighting(isDark), [isDark]);
   const [geojson, setGeojson] = useState<FeatureCollection<Geometry, DistrictProps> | null>(
     null,
   );
   const [error, setError] = useState<string | null>(null);
+
+  const mapView = useMemo(
+    () =>
+      new MapView({
+        id: "map",
+        repeat: false,
+        farZMultiplier: 4,
+        clearColor: mapClearColor,
+      }),
+    [mapClearColor],
+  );
 
   const scoreById = useMemo(() => {
     const map = new Map<
@@ -174,7 +188,9 @@ export default function BangkokMapInner() {
         getLineColor: (feature) =>
           feature.properties?.id === selectedId
             ? LINE_COLOR_SELECTED
-            : LINE_COLOR,
+            : isDark
+              ? LINE_COLOR_DARK
+              : LINE_COLOR_LIGHT,
         getLineWidth: (feature) =>
           feature.properties?.id === selectedId ? 3 : 2,
         lineWidthUnits: "pixels",
@@ -201,24 +217,24 @@ export default function BangkokMapInner() {
             weather.rainIntensity,
             selectedId,
           ],
-          getLineColor: [selectedId],
+          getLineColor: [selectedId, isDark],
           getLineWidth: [selectedId],
         },
       }),
     ];
-  }, [geojson, onDistrictClick, onDistrictHover, scoreById, selectedId, weather]);
+  }, [geojson, isDark, onDistrictClick, onDistrictHover, scoreById, selectedId, weather]);
 
   return (
-    <div className="relative h-full min-h-[420px] overflow-hidden rounded-2xl border border-white/10 bg-[#0b0f1f]">
+    <div className="relative h-full min-h-[420px] overflow-hidden rounded-2xl border border-border bg-map">
       {error ? (
-        <div className="flex h-full items-center justify-center text-sm text-rose-200">
+        <div className="flex h-full items-center justify-center text-sm text-rose-600 dark:text-rose-200">
           {error}
         </div>
       ) : null}
       <DeckGL
         width="100%"
         height="100%"
-        views={MAP_VIEW}
+        views={mapView}
         initialViewState={BANGKOK_VIEW}
         controller={{
           dragPan: true,
@@ -235,7 +251,7 @@ export default function BangkokMapInner() {
         getCursor={({ isDragging, isHovering }) =>
           isDragging ? "grabbing" : isHovering ? "pointer" : "grab"
         }
-        style={{ background: "transparent" }}
+        style={{ background: isDark ? "#09090b" : "#e2e8f0" }}
       />
       {hoverTip ? (
         <div
@@ -250,11 +266,11 @@ export default function BangkokMapInner() {
         </div>
       ) : null}
       {!geojson && !error ? (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[#0b0f1f]/70 text-sm text-cyan-100">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-map/70 text-sm text-cyan-800 dark:text-cyan-100">
           Loading 3D Bangkok districts…
         </div>
       ) : null}
-      <p className="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-white/10 bg-[#0b0f1f]/80 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-slate-400">
+      <p className="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-border bg-card/90 px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-muted">
         Drag pan · Ctrl-drag rotate · Scroll zoom
       </p>
     </div>
