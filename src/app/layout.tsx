@@ -25,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${prompt.variable} ${jetbrains.variable} h-full antialiased`}
+      className={`dark ${prompt.variable} ${jetbrains.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background font-sans text-foreground">
         <Providers>{children}</Providers>
