@@ -70,9 +70,6 @@ export default function BangkokMapInner() {
   const { rankedDistricts, selectedId, selectDistrict, weather } = useFlood();
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme !== "light";
-  const mapClearColor = isDark
-    ? ([9, 9, 11, 255] as [number, number, number, number])
-    : ([226, 232, 240, 255] as [number, number, number, number]);
   const lightingEffect = useMemo(() => createLighting(isDark), [isDark]);
   const [geojson, setGeojson] = useState<FeatureCollection<Geometry, DistrictProps> | null>(
     null,
@@ -85,9 +82,11 @@ export default function BangkokMapInner() {
         id: "map",
         repeat: false,
         farZMultiplier: 4,
-        clearColor: mapClearColor,
+        clearColor: isDark
+          ? ([9, 9, 11, 255] as [number, number, number, number])
+          : ([226, 232, 240, 255] as [number, number, number, number]),
       }),
-    [mapClearColor],
+    [isDark],
   );
 
   const scoreById = useMemo(() => {
