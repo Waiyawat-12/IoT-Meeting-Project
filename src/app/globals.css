@@ -35,33 +35,16 @@ body {
   font-family: var(--font-sans);
 }
 
-.leaflet-container {
-  background: #07111c;
-  font-family: var(--font-sans);
-}
-
-.leaflet-control-attribution {
-  background: rgba(7, 17, 28, 0.72) !important;
-  color: #94a3b8 !important;
-}
-
-.leaflet-control-zoom a {
-  background: #0f1c2c !important;
-  color: #e2e8f0 !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-.bkk-leaflet-tooltip {
+.bkk-deck-tooltip.deck-tooltip,
+.deck-tooltip.bkk-deck-tooltip {
   background: rgba(7, 17, 28, 0.94) !important;
   border: 1px solid rgba(34, 211, 238, 0.35) !important;
   border-radius: 12px !important;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
   color: #f8fafc !important;
+  font-family: var(--font-sans);
+  overflow: hidden;
   padding: 0 !important;
-}
-
-.bkk-leaflet-tooltip::before {
-  border-top-color: rgba(7, 17, 28, 0.94) !important;
 }
 
 .bkk-tip {
