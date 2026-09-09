@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  --background: #07111c;
+  --foreground: #e8eef6;
+  --card: rgba(7, 17, 28, 0.72);
+  --risk-low: #10b981;
+  --risk-moderate: #eab308;
+  --risk-high: #f97316;
+  --risk-critical: #f43f5e;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-prompt), "Noto Sans Thai", sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(34, 211, 238, 0.16), transparent 55%),
+    radial-gradient(900px 500px at 110% 10%, rgba(244, 63, 94, 0.1), transparent 50%),
+    linear-gradient(180deg, #0b1a2b 0%, #07111c 40%, #050b14 100%);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+.leaflet-container {
+  background: #07111c;
+  font-family: var(--font-sans);
+}
+
+.leaflet-control-attribution {
+  background: rgba(7, 17, 28, 0.72) !important;
+  color: #94a3b8 !important;
+}
+
+.leaflet-control-zoom a {
+  background: #0f1c2c !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.bkk-leaflet-tooltip {
+  background: rgba(7, 17, 28, 0.94) !important;
+  border: 1px solid rgba(34, 211, 238, 0.35) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
+  color: #f8fafc !important;
+  padding: 0 !important;
+}
+
+.bkk-leaflet-tooltip::before {
+  border-top-color: rgba(7, 17, 28, 0.94) !important;
+}
+
+.bkk-tip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 140px;
+  padding: 8px 10px;
+}
+
+.bkk-tip strong {
+  font-size: 13px;
+}
+
+.bkk-tip span {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.bkk-tip em {
+  color: #67e8f9;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+}

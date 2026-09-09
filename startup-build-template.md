@@ -1,18 +1,22 @@
 ---
 
 # 🏆 AI + IoT + Embedded Systems Innovation Prototype
-## Competition Framework: 5W1H + 5 Why 
+## Competition Framework: 5W1H + 5 Why
 
 เป้าหมายเพื่อสร้าง โอกาสทางธุรกิจ Startup
+
+โปรเจกต์ต้นแบบที่ใช้งานได้: **Bangkok Smart Flood Risk Prediction & Monitoring System**  
+แดชบอร์ด: รัน `npm install` แล้ว `npm run dev` เปิด http://localhost:3000
+
 ---
 
 # 📌 PART 1: PROJECT OVERVIEW
 
 ```markdown
-## โปรเจกต์: [ชื่อโปรเจกต์ของคุณ]
-**Tagline:** [1 ประโยคที่ทำให้คนจำได้ เช่น "เปลี่ยนไฟเขียวโง่ ให้เป็นไฟเขียวอัจฉริยะ" ]
-**ประเภทปัญหาที่แก้:** [Social / Environmental / Healthcare / Smart City / Agriculture / Education]
-**ระดับความพร้อม:** [ไอเดีย / ต้นแบบกระดาษ / Proof of Concept / MVP ใช้งานได้]
+## โปรเจกต์: Bangkok Smart Flood Risk Prediction & Monitoring System
+**Tagline:** เห็นน้ำท่วมก่อนน้ำมา — 50 เขตกรุงเทพฯ ในแผนที่เดียว
+**ประเภทปัญหาที่แก้:** Smart City / Environmental / Social
+**ระดับความพร้อม:** MVP ใช้งานได้ (interactive web prototype + firmware sample + schema)
 ```
 
 ---
@@ -22,11 +26,11 @@
 ## 1. WHO (ใคร)
 
 ```markdown
-- ผู้ใช้หลัก (Primary User): [........]
-- ผู้ได้รับผลกระทบทางอ้อม (Secondary): [........]
-- ผู้ตัดสินใจซื้อ/ติดตั้ง (Decision Maker): [........]
-- ผู้ดูแลระบบ (Maintainer): [........]
-- ผู้มีส่วนได้ส่วนเสีย (Stakeholders): [........]
+- ผู้ใช้หลัก (Primary User): ศูนย์ปฏิบัติการป้องกันน้ำท่วม กทม. / ผู้ควบคุมสถานีสูบน้ำ
+- ผู้ได้รับผลกระทบทางอ้อม (Secondary): ประชาชนผู้ใช้รถใช้ถนน, ชุมชนในเขตลุ่ม เช่น ลาดพร้าว บางเขน ดอนเมือง
+- ผู้ตัดสินใจซื้อ/ติดตั้ง (Decision Maker): ผู้ว่าราชการกรุงเทพมหานคร, สำนักการระบายน้ำ (DDS), สำนักการโยธา
+- ผู้ดูแลระบบ (Maintainer): ทีม Smart City / IoT ของ กทม. และผู้รับเหมาระบบสูบน้ำ
+- ผู้มีส่วนได้ส่วนเสีย (Stakeholders): ทช., กรมอุตุนิยมวิทยา, การไฟฟ้านครหลวง, ประชาชน, สตาร์ทอัพประกันภัยภูมิอากาศ
 ```
 
 ---
@@ -34,23 +38,23 @@
 ## 2. WHAT (อะไร)
 
 ```markdown
-- **ตรวจจับ/วัด (Sensing):** 
-  - Sensor: [........]
-  - Data Type: [Analog/Digital/Image/Audio/IMU/GPS]
-  - Accuracy Requirement: [........]
-  
-- **ประมวลผล (Processing):** 
-  - Edge หรือ Cloud: [........]
-  - Algorithm/Model: [........]
-  - Output: [Classification/Regression/Detection/Prediction]
-  
-- **ควบคุม (Actuation):** 
-  - Actuator: [Motor/Relay/Display/Buzzer/Servo]
-  - Control Logic: [PID/On-Off/AI-based]
-  
-- **แจ้งเตือน (Notification):** 
-  - ช่องทาง: [Line/Telegram/SMS/Dashboard/LED/Buzzer]
-  - ระดับความเร่งด่วน: [Info/Warning/Critical]
+- **ตรวจจับ/วัด (Sensing):**
+  - Sensor: tipping-bucket rain gauge, HC-SR04 / radar water-level, ACS712 pump current, GPS
+  - Data Type: Digital (rain tips), Analog (current), Time-of-flight (level)
+  - Accuracy Requirement: ±0.2 mm/tip rain, ±2 cm water level, 5-second telemetry
+
+- **ประมวลผล (Processing):**
+  - Edge หรือ Cloud: Hybrid — Edge ตัดสินใจเปิดปั๊ม, Cloud รวม 50 เขตและสภาพอากาศ
+  - Algorithm/Model: Heuristic weighted score (prototype) → XGBoost/LSTM ในเฟสถัดไป
+  - Output: Prediction (RiskScore 0–100%) + Classification (Low/Moderate/High/Critical)
+
+- **ควบคุม (Actuation):**
+  - Actuator: Pump relay, LED status, (อนาคต) ประตูระบาย / ป้ายจราจร
+  - Control Logic: On-Off ที่ Edge ตามระดับน้ำ + AI recommendation ที่ Cloud
+
+- **แจ้งเตือน (Notification):**
+  - ช่องทาง: Operator dashboard (Leaflet heat map), LINE/SMS ในเฟสถัดไป
+  - ระดับความเร่งด่วน: Info (All Clear) / Warning (Prepare Pumps) / Critical (Emergency drainage)
 ```
 
 ---
@@ -58,11 +62,11 @@
 ## 3. WHEN (เมื่อไหร่)
 
 ```markdown
-- ช่วงเวลาเกิดปัญหา: [........]
-- ระยะเวลาที่ยอมรับได้ (Response Time): [........ ms]
-- ความถี่ในการอ่านค่า (Sampling Rate): [........ Hz]
-- ความถี่ในการอัปเดต (Update Cycle): [........]
-- ระยะเวลาที่ระบบต้องทำงานต่อเนื่อง: [........ ชั่วโมง/วัน]
+- ช่วงเวลาเกิดปัญหา: ฤดูฝน พ.ค.–ต.ค. โดยเฉพาะพายุฤดูร้อนช่วงบ่ายและน้ำเหนือ+น้ำทะเลหนุน
+- ระยะเวลาที่ยอมรับได้ (Response Time): เปิดปั๊มที่ Edge < 500 ms, อัปเดตแดชบอร์ด < 5 s
+- ความถี่ในการอ่านค่า (Sampling Rate): ระดับน้ำทุก 1 Hz, สรุปฝนทุก 5 s
+- ความถี่ในการอัปเดต (Update Cycle): Telemetry 5 s, city-wide risk snapshot 1 นาที
+- ระยะเวลาที่ระบบต้องทำงานต่อเนื่อง: 24/7 ช่วงมรสุม, UPS ≥ 12 ชั่วโมง
 ```
 
 ---
@@ -70,12 +74,12 @@
 ## 4. WHERE (ที่ไหน)
 
 ```markdown
-- ตำแหน่งติดตั้ง: [ Indoor / Outdoor / Mobile / Underwater / High-temp ]
-- สภาพแวดล้อม: [........]
-- ระยะห่างจาก Gateway: [........ เมตร]
-- การสื่อสาร: [WiFi / BLE / LoRa / Zigbee / 4G / NB-IoT / Ethernet]
-- แหล่งจ่ายไฟ: [Battery / Solar / USB / DC Adapter / Energy Harvesting]
-- ข้อจำกัดด้านขนาด/น้ำหนัก: [........]
+- ตำแหน่งติดตั้ง: Outdoor — สถานีสูบน้ำ / ปากคลอง / ทางลอด ใน 50 เขตกรุงเทพฯ
+- สภาพแวดล้อม: ความชื้นสูง, น้ำเค็มชายฝั่งบางขุนเทียน, สั่นสะเทือนจากปั๊ม
+- ระยะห่างจาก Gateway: 0–200 เมตรในสถานี, backhaul 4G/Wi-Fi ไปคลาวด์
+- การสื่อสาร: WiFi ในแล็บ, 4G/NB-IoT ในสนาม, MQTT ไปคลาวด์
+- แหล่งจ่ายไฟ: DC Adapter + UPS, Solar สำรองที่สถานีเปิดโล่ง
+- ข้อจำกัดด้านขนาด/น้ำหนัก: กล่อง IP65 ≤ 3 kg สำหรับติดตั้งผนังสถานี
 ```
 
 ---
@@ -83,11 +87,11 @@
 ## 5. WHY (ทำไม) - 5 Why Deep Dive
 
 ```markdown
-- Why 1 (ปัญหา): [........]
-- Why 2 (ต้นตอ): [........]
-- Why 3 (วิธีเดิมพัง): [........]
-- Why 4 (AI+IoT ตอบโจทย์): [........]
-- Why 5 (ทำไมตอนนี้): [........]
+- Why 1 (ปัญหา): กรุงเทพฯ น้ำท่วมซ้ำทุกปี แม้มีปั๊มและอุโมงค์ระบายน้ำจำนวนมาก
+- Why 2 (ต้นตอ): ที่ลุ่ม + แผ่นดินทรุด + ฝนกระจุก + คลองตื้น + ข้อมูลกระจัดกระจาย
+- Why 3 (วิธีเดิมพัง): ดูกล้อง/รายงานเขตทีละจุด ช้าเกินกว่าฝน 110 mm/hr
+- Why 4 (AI+IoT ตอบโจทย์): รวม telemetry กับช่องโหว่รายเขตเป็น RiskScore ทันที
+- Why 5 (ทำไมตอนนี้): ฝนสุดขั้วถี่ขึ้น ต้นทุน ESP32 ต่ำ และ กทม. เดินหน้า Smart City
 ```
 
 ---
@@ -97,32 +101,35 @@
 ### Hardware Stack
 
 ```markdown
-- MCU / SoC: [ESP32 / ESP8266 / RP2040 / STM32 / Arduino / Raspberry Pi]
-- Clock Speed: [........ MHz]
-- RAM / Flash: [........ KB / MB]
-- Sensor(s): [........]
-- Actuator(s): [........]
-- Communication Module: [........]
-- Power Management: [........]
+- MCU / SoC: ESP32-WROOM-32
+- Clock Speed: 240 MHz
+- RAM / Flash: 520 KB SRAM / 4 MB Flash
+- Sensor(s): tipping-bucket rain, HC-SR04, ACS712
+- Actuator(s): 5V/12V pump relay, status LED
+- Communication Module: ESP32 Wi-Fi, MQTT (PubSubClient)
+- Power Management: 5V supply + UPS; brown-out detector on ESP32
 ```
 
 ### Software Stack
 
 ```markdown
-- Framework: [Arduino / ESP-IDF / MicroPython / FreeRTOS / Zephyr]
-- AI Framework: [TensorFlow Lite Micro / Edge Impulse / OpenMV / PyTorch Mobile]
-- AI Model Type: [CNN / RNN / LSTM / Decision Tree / Random Forest / XGBoost / YOLO / MobileNet]
-- Model Size: [........ KB]
-- Inference Time: [........ ms]
-- Protocol: [MQTT / HTTP / CoAP / WebSocket / LoRaWAN]
-- Cloud Platform (ถ้าใช้): [AWS IoT / GCP / Azure / Firebase / ThingSpeak / Blynk]
+- Framework: Arduino (firmware) + Next.js 16 App Router / TypeScript (dashboard)
+- AI Framework: heuristic now; Edge Impulse / TensorFlow Lite Micro next
+- AI Model Type: Weighted score → future XGBoost / LSTM rainfall nowcast
+- Model Size: < 2 KB heuristic; target < 250 KB TFLite
+- Inference Time: < 1 ms on server, < 20 ms target on ESP32
+- Protocol: MQTT telemetry, HTTP `/api/risk` for the dashboard
+- Cloud Platform (ถ้าใช้): self-hosted Mosquitto + PostgreSQL/TimescaleDB/PostGIS (see docs/schema.sql)
 ```
 
 ### Data Pipeline
 
 ```markdown
-- Data Collection → Preprocessing → Model Inference → Decision → Actuation → Feedback Loop
+Rain/level/pump → ESP32 preprocess → local pump decision → MQTT → TimescaleDB
+      → floodEngine (chance, intensity, vulnerability) → Leaflet heat map → operator action → feedback
 ```
+
+ดูแผนภาพที่ `/architecture` และ `src/components/dashboard/ArchitectureDiagram.tsx`
 
 ---
 
@@ -131,9 +138,9 @@
 ## WHY 1: ปัญหา (Problem Scenario)
 
 ```markdown
-- **Scenario:** [เล่าเรื่องราวให้กรรมการเห็นภาพ ราวกับกำลังดูหนังสั้น]
+- **Scenario:** ฝนเซลล์เดียวถล่มลาดพร้าวตอน 16:40 น้ำในซอยเอ่อก่อนที่วอร์รูมจะได้รายงานจากเขต
 - **คำถามหลัก:** ทำไมถึงต้องแก้ปัญหานี้?
-- **Data/Evidence:** [ตัวเลข/สถิติที่ยืนยันความรุนแรงของปัญหา]
+- **Data/Evidence:** มหาอุทกภัยปี 2554 สร้างความเสียหายราว 1.4 ล้านล้านบาท (World Bank). กรุงเทพฯ มี 50 เขต ความสูงเฉลี่ยประมาณ 1.5 ม. และทรุดตัวต่อเนื่อง
 ```
 
 ---
@@ -141,9 +148,9 @@
 ## WHY 2: ต้นตอ (Root Cause Scenario)
 
 ```markdown
-- **Scenario:** [เล่าถึงพฤติกรรมหรือปัจจัยที่ทำให้เกิดปัญหาจริง ๆ]
+- **Scenario:** ลาดพร้าว บางเขน ดอนเมือง วัฒนา พระโขนง เป็นแอ่งรับน้ำ ขณะที่พระนคร/สัมพันธวงศ์มีปั๊มหนาแน่นกว่า
 - **คำถามหลัก:** ทำไมสาเหตุนั้นถึงเกิดขึ้น?
-- **Insight:** [สิ่งที่ค้นพบที่ไม่เคยรู้มาก่อน]
+- **Insight:** ฝนเท่ากันไม่เท่ากับความเสี่ยงเท่ากัน — ต้องมี baseVulnerability รายเขต
 ```
 
 ---
@@ -151,9 +158,9 @@
 ## WHY 3: วิธีเดิมพัง (Failure Scenario)
 
 ```markdown
-- **Scenario:** [เล่าถึงความล้มเหลวของเทคโนโลยี/วิธีการที่มีอยู่]
+- **Scenario:** แผนที่กระดาษและกลุ่มไลน์มาช้า ปั๊มเปิดไม่พร้อมกัน ทางลอดยังไม่ปิด
 - **คำถามหลัก:** ทำไมวิธีแก้เดิมถึงใช้ไม่ได้?
-- **Gap Analysis:** [ช่องว่างที่เทคโนโลยีเดิมไม่สามารถเติมเต็มได้]
+- **Gap Analysis:** ไม่มี city-wide RiskScore แบบเรียลไทม์ที่อธิบายได้ (explainable) ต่อผู้บริหาร
 ```
 
 ---
@@ -161,9 +168,9 @@
 ## WHY 4: AI+IoT เข้ามาช่วย (Solution Scenario)
 
 ```markdown
-- **Scenario:** [เล่าถึงวินาทีที่ AI+IoT เปลี่ยนเกม]
+- **Scenario:** สไลด์ “Severe Flash Flood Risk” แล้ว 50 เหลี่ยมเขตเปลี่ยนเป็นส้ม/แดงในพริบตา พร้อมคำสั่ง Prepare Pumps / Issue Traffic Warning
 - **คำถามหลัก:** ทำไมต้องใช้เทคโนโลยีนี้ (ไม่ใช่วิธีอื่น)?
-- **Innovation Highlight:** [จุดที่ AI/IoT สร้างความแตกต่างอย่างชัดเจน]
+- **Innovation Highlight:** แผนที่ GeoJSON จริง + สูตรโปร่งใส + IoT คุมปั๊มที่ขอบข่าย แม้ Wi-Fi หลุด
 ```
 
 ---
@@ -171,9 +178,9 @@
 ## WHY 5: ทำไมต้องตอนนี้ (Urgency Scenario)
 
 ```markdown
-- **Scenario:** [เล่าถึงวิกฤตหรือโอกาสที่กำลังจะมาถึง]
+- **Scenario:** ฝนสุดขั้วถี่ขึ้น ขณะที่ต้นทุนสถานี ESP32 ต่อจุดอยู่ในหลักพันบาท
 - **คำถามหลัก:** ทำไมถึงต้องรีบทำวันนี้? ถ้ารออีก 1-3 ปีจะเกิดอะไร?
-- **Market Timing:** [ปัจจัยภายนอกที่ทำให้ตอนนี้คือเวลาที่เหมาะสม]
+- **Market Timing:** Smart City budgets, climate-risk insurance, และ ESG ของเมืองใหญ่กำลังเปิดหน้าต่างตลาด
 ```
 
 ---
@@ -181,54 +188,54 @@
 ## HOW: ต้นแบบที่ใช้งานได้ (Demo Scenario)
 
 ```markdown
-- **Scenario:** [เล่าถึง Moment of Truth ที่กรรมการจะได้เห็นระบบทำงาน]
-- **Hardware Details:** [........]
-- **Software Details:** [........]
-- **KPI / Success Metrics:** [........]
+- **Scenario:** ผู้ตัดสินใจลากสไลเดอร์ฝน 0→110 mm/hr เห็นลาดพร้าววิกฤตก่อนพระนคร คลิกเขตแล้วได้คำแนะนำภาษาไทย/อังกฤษ
+- **Hardware Details:** ESP32 sample in firmware/drainage-station (relay + rain + ultrasonic)
+- **Software Details:** Next.js dashboard, Leaflet polygons, lib/floodEngine.ts, /api/risk
+- **KPI / Success Metrics:** 50 เขตครบ, latency สไลเดอร์ < 100 ms, RiskScore ถูกต้องตามสูตร, GeoJSON โหลดจาก /public/bkk-districts.json
 ```
 
 ---
 
 # 📌 PART 4: COMPETITION EDGE
 
-## 🎯 UNIQUE SELLING POINT (USP) - ทำไมทีมเราต้องชนะ?
+## 🎯 UNIQUE SELLING POINT (USP)
 
 ```markdown
 | มิติ | จุดแข็งของเรา | เมื่อเทียบกับคู่แข่ง |
 | :--- | :--- | :--- |
-| **ต้นทุน (Cost)** | [........] | ต่ำกว่า [........]% |
-| **ความเร็ว (Speed)** | [........ ms] | เร็วกว่า [........] เท่า |
-| **ความแม่นยำ (Accuracy)** | [........%] | สูงกว่า [........%] |
-| **ความทนทาน (Durability)** | [........] | อยู่ได้นานกว่า [........] เท่า |
-| **การประหยัดพลังงาน (Power)** | [........ mW] | ประหยัดกว่า [........]% |
-| **ความง่ายในการติดตั้ง (Ease of Deployment)** | [........] | ง่ายกว่า [........] เท่า |
-| **ความเป็นเอกลักษณ์ (Novelty)** | [........] | ไม่มีใครทำมาก่อน |
+| **ต้นทุน (Cost)** | สถานี ESP32 ~2,500 บาท | ต่ำกว่า SCADA อุตสาหกรรมอย่างน้อย 70% |
+| **ความเร็ว (Speed)** | Edge < 500 ms, UI < 100 ms | เร็วกว่าการรายงานด้วยมือหลายสิบเท่า |
+| **ความแม่นยำ (Accuracy)** | สูตรโปร่งใส + prior รายเขต | อธิบายได้ ไม่ใช่กล่องดำ |
+| **ความทนทาน (Durability)** | Offline-first ที่ปั๊ม | อยู่รอดเมื่อคลาวด์ล่ม |
+| **การประหยัดพลังงาน (Power)** | ESP32 modem-sleep | ประหยัดกว่าเกตเวย์อุตสาหกรรม |
+| **ความง่ายในการติดตั้ง (Ease of Deployment)** | กล่อง IP65 ต่อปั๊มเดิม | ไม่ต้องรื้อ SCADA ทั้งระบบ |
+| **ความเป็นเอกลักษณ์ (Novelty)** | 50 เขตบน GeoJSON จริง + เครื่องยนต์ความเสี่ยงที่จำลองได้ | แดชบอร์ดอากาศทั่วไปไม่มี vulnerability รายเขต |
 ```
 
 ---
 
-## ⚠️ RISK & MITIGATION (ความเสี่ยงและแผนรับมือ)
+## ⚠️ RISK & MITIGATION
 
 ```markdown
 | ความเสี่ยง | โอกาสเกิด | ผลกระทบ | แผนรับมือ (Mitigation) |
 | :--- | :--- | :--- | :--- |
-| 1. [........] | สูง/กลาง/ต่ำ | สูง/กลาง/ต่ำ | [........] |
-| 2. [........] | สูง/กลาง/ต่ำ | สูง/กลาง/ต่ำ | [........] |
-| 3. [........] | สูง/กลาง/ต่ำ | สูง/กลาง/ต่ำ | [........] |
+| 1. เซ็นเซอร์ระดับน้ำสกปรก/ผิดพลาด | สูง | สูง | Self-check + ใช้ฝนและกระแสปั๊มประกอบ (sensor fusion) |
+| 2. MQTT/อินเทอร์เน็ตหลุด | กลาง | กลาง | ตัดสินใจที่ Edge ก่อน แล้ว sync เมื่อกลับมา |
+| 3. Prior รายเขตไม่ตรงภูมิประเทศจริง | กลาง | กลาง | ปรับ baseVulnerability จากประวัติน้ำท่วมจริงของ DDS |
 ```
 
 ---
 
-## 📊 TECHNICAL FEASIBILITY (ความเป็นไปได้ทางเทคนิค)
+## 📊 TECHNICAL FEASIBILITY
 
 ```markdown
 | ด้าน | ความท้าทาย | ความเป็นไปได้ | วิธีพิสูจน์ |
 | :--- | :--- | :--- | :--- |
-| **Hardware Integration** | [........] | ✅/⚠️/❌ | [........] |
-| **AI Model Size** | [........] | ✅/⚠️/❌ | [........] |
-| **Real-time Performance** | [........] | ✅/⚠️/❌ | [........] |
-| **Power Consumption** | [........] | ✅/⚠️/❌ | [........] |
-| **Connectivity** | [........] | ✅/⚠️/❌ | [........] |
+| **Hardware Integration** | กันน้ำ + สัญญาณรบกวนปั๊ม | ✅ | สเก็ตช์ Arduino + BOM |
+| **AI Model Size** | เริ่มจาก heuristic | ✅ | lib/floodEngine.ts + vitest |
+| **Real-time Performance** | รีเรนเดอร์ 50 เหลี่ยม | ✅ | React memo + Leaflet GeoJSON |
+| **Power Consumption** | สถานีกลางแจ้ง | ⚠️ | UPS 12 ชม. ก่อนติดโซลาร์ |
+| **Connectivity** | Wi-Fi ในอุโมงค์สูบน้ำ | ⚠️ | 4G router ในสถานีจริง |
 ```
 
 ---
@@ -238,104 +245,113 @@
 ## 🎬 Demo Flow (5-7 นาที)
 
 ```markdown
-1. **Opening Hook (1 นาที):** [เล่า Scenario ที่สะเทือนอารมณ์]
-2. **Problem Statement (1 นาที):** [ตัวเลข + ภาพที่น่าตกใจ]
-3. **Solution Reveal (2 นาที):** [โชว์ Prototype ทำงานจริงครั้งแรก]
-4. **Technical Highlight (1.5 นาที):** [โชว์ส่วนที่เจ๋งที่สุด]
-5. **Impact & Future (1 นาที):** [ถ้าขยายผลจะเกิดอะไร]
-6. **Closing (0.5 นาที):** [Tagline ที่ฝังใจ]
+1. **Opening Hook (1 นาที):** ซอยลาดพร้าวปี 2554 vs แดชบอร์ดวันนี้
+2. **Problem Statement (1 นาที):** 50 เขต ฝนเท่ากันแต่เสี่ยงไม่เท่ากัน
+3. **Solution Reveal (2 นาที):** กด Sunny → Seasonal → Severe แล้วแผนที่เปลี่ยนสี
+4. **Technical Highlight (1.5 นาที):** คลิกเขต ดูสูตร ดูปั๊ม ดู /architecture
+5. **Impact & Future (1 นาที):** ต่อ ESP32 จริง, LINE alert, ประกันภัยพาราเมตริก
+6. **Closing (0.5 นาที):** “เห็นน้ำท่วมก่อนน้ำมา”
 ```
 
 ## Demo Props ที่ต้องมี
 
 ```markdown
-- [ ] Prototype ที่ทำงานได้จริง (ไม่ใช่แค่ Slide)
-- [ ] Dashboard / Mobile App ที่แสดงผล Real-time
-- [ ] ข้อมูลเปรียบเทียบ Before/After
-- [ ] วีดีโอสั้น Backup (เผื่ออุปกรณ์พัง)
-- [ ] แผนภาพ System Architecture (ขนาด A1)
+- [x] Prototype ที่ทำงานได้จริง (แดชบอร์ดนี้)
+- [x] Dashboard ที่แสดงผลตามสไลเดอร์ทันที
+- [x] Before/After ผ่าน preset Sunny vs Severe
+- [x] แผนภาพ System Architecture ที่ /architecture
+- [ ] วีดีโอสั้น Backup (บันทึกตอนเดโม)
 ```
 
 ## Marketing opportunity
 
-- สรุปโอกาสทางธุรกิจ
-- ผลกระทบทางบวก และ โอกาสความสำเร็จ
+- ขายเป็น **FloodOps OS** ให้เทศบาล — SaaS รายเขต + ฮาร์ดแวร์สถานี
+- ลดชั่วโมงปิดถนน, ลดเคลมประกัน, เปิดตลาด climate-risk data
+- ขยายไปนนทบุรี ปทุมธานี สมุทรปราการ ซึ่งอยู่บนที่ราบเดียวกัน
+
 ---
 
 # 📌 PART 6: Q&A PREPARATION
 
-## คำถามที่กรรมการมักถาม (พร้อมคำตอบต้นแบบ)
-
 ```markdown
 | คำถามกรรมการ | คำตอบที่ชาญฉลาด |
 | :--- | :--- |
-| *"แล้วถ้า WiFi หลุดล่ะ?"* | "เราออกแบบระบบให้ทำงานแบบ Offline-first ทุกการตัดสินใจเกิดขึ้นที่ Edge (ESP32) โดยส่งข้อมูลขึ้น Cloud แค่เพื่อเก็บสถิติเท่านั้น ถ้า WiFi หลุด ระบบยังทำงานได้ปกติ และจะ Sync ข้อมูลอัตโนมัติเมื่อเชื่อมต่อได้ใหม่" |
-| *"ราคาเท่าไหร่? ขายได้จริงไหม?"* | "ต้นทุน Prototype อยู่ที่ [XX] บาท ถ้าผลิตจำนวน 1,000 ชิ้น จะลดเหลือ [XX] บาท ซึ่งต่ำกว่าคู่แข่งในตลาดถึง [XX]% โดยกลุ่มเป้าหมายแรกคือ [........] ที่มีความพร้อมในการซื้อ" |
-| *"ต่างจากของที่มีอยู่แล้วยังไง?"* | "ของที่มีอยู่ใช้ [เทคโนโลยีเก่า] ซึ่งมีข้อจำกัดเรื่อง [........] ในขณะที่เรามี [นวัตกรรมใหม่] ที่ช่วยให้ [........] ซึ่งเป็นจุดที่ไม่มีใครทำมาก่อน" |
-| *"ทำไมต้องใช้ AI? ใช้ If-Else ก็ได้?"* | "เพราะพฤติกรรมของปัญหานี้ไม่เป็นเส้นตรง (Non-linear) และมี Pattern ที่ซับซ้อนเกินกว่ากฏเกณฑ์ตายตัวจะจัดการได้ เช่น [ยกตัวอย่าง] AI จะเรียนรู้ Pattern เหล่านี้ได้โดยอัตโนมัติ" |
-| *"ถ้าเซ็นเซอร์เสียจะทำยังไง?"* | "เราใช้ Sensor Fusion และมีระบบ Self-Diagnostic ที่ตรวจสอบสุขภาพเซ็นเซอร์ทุก [XX] วินาที ถ้าเซ็นเซอร์ตัวไหนผิดปกติ ระบบจะแจ้งเตือนทันทีและใช้ค่าเฉลี่ยจากเซ็นเซอร์ตัวอื่นแทน" |
+| *"แล้วถ้า WiFi หลุดล่ะ?"* | "ปั๊มตัดสินใจที่ ESP32 จากระดับน้ำและฝนในสถานี คลาวด์ใช้เก็บสถิติและภาพรวม 50 เขต เมื่อเน็ตกลับมาจะ MQTT sync เอง" |
+| *"ราคาเท่าไหร่? ขายได้จริงไหม?"* | "Prototype สถานี ~2,500 บาท ผลิต 1,000 ชุดเป้า ~1,200 บาท ลูกค้าแรกคือสำนักการระบายน้ำและเทศบาลปริมณฑลที่งบ Smart City พร้อม" |
+| *"ต่างจากของที่มีอยู่แล้วยังไง?"* | "เรดาร์ฝนและ SCADA มีอยู่แล้วแต่ไม่รวมช่องโหว่รายเขตเป็นสีบนแผนที่ 50 เขตที่ผู้บริหารอ่านได้ใน 3 วินาที" |
+| *"ทำไมต้องใช้ AI? ใช้ If-Else ก็ได้?"* | "If-else ใช้ที่ Edge สำหรับปั๊มได้ แต่ความเสี่ยงระดับเมืองไม่เชิงเส้น ฝน × คลอง × ทรุด × ปั๊มเสีย ต้องมีโมเดลที่ปรับ prior ได้" |
+| *"ถ้าเซ็นเซอร์เสียจะทำยังไง?"* | "สถานีเช็ค echo timeout และกระแสปั๊มทุก 5 วินาที ถ้าผิดปกติจะลดน้ำหนักเซ็นเซอร์นั้นแล้วใช้ค่าเขตข้างเคียง" |
 ```
 
 ---
 
-# 📌 PART 7: PROJECT SUMMARY CARD (หนึ่งหน้ากระชับสำหรับกรรมการ)
+# 📌 PART 7: PROJECT SUMMARY CARD
 
 ```markdown
 ## 🏷️ PROJECT SUMMARY CARD
 
 | หัวข้อ | รายละเอียด |
 | :--- | :--- |
-| **ชื่อโปรเจกต์** | [........] |
-| **Tagline** | [........] |
-| **ปัญหาที่แก้** | [........] |
-| **กลุ่มเป้าหมาย** | [........] |
-| **เทคโนโลยีหลัก** | [........] |
-| **จุดเด่น (USP)** | 1. [........] <br> 2. [........] <br> 3. [........] |
-| **KPI สำเร็จ** | [........] |
-| **ต้นทุน Prototype** | [........] บาท |
-| **ทีมงาน** | [........] |
+| **ชื่อโปรเจกต์** | Bangkok Smart Flood Risk Prediction & Monitoring |
+| **Tagline** | เห็นน้ำท่วมก่อนน้ำมา |
+| **ปัญหาที่แก้** | น้ำท่วมกรุงเทพฯ ที่มองไม่เห็นทั้งเมืองแบบเรียลไทม์ |
+| **กลุ่มเป้าหมาย** | กทม. สำนักการระบายน้ำ, เทศบาลปริมณฑล, วอร์รูมภัยพิบัติ |
+| **เทคโนโลยีหลัก** | Next.js, Leaflet GeoJSON, heuristic flood engine, ESP32/MQTT |
+| **จุดเด่น (USP)** | 1. 50 เขตบนขอบเขตจริง <br> 2. สูตรความเสี่ยงโปร่งใส <br> 3. Offline-first ที่ปั๊ม |
+| **KPI สำเร็จ** | แผนที่ 50 เขต, preset 3 สถานการณ์, API /api/risk, vitest สูตรผ่าน |
+| **ต้นทุน Prototype** | แดชบอร์ดซอฟต์แวร์ ~0 บาท (โอเพนซอร์ส) + สถานี ESP32 ~2,500 บาท |
+| **ทีมงาน** | Prototype team — IoT Meeting Project |
 ```
 
 ---
 
-# 📌 PART 8: ACTION PLAN (4 สัปดาห์)
+# 📌 PART 8: ACTION PLAN
 
 ```markdown
-## 🗓️ 4-Week Development Plan
+## Development Plan (technical slices, not calendar weeks)
 
-| สัปดาห์ | เป้าหมาย | งานหลัก | Deliverable |
+| Slice | เป้าหมาย | งานหลัก | Deliverable |
 | :---: | :--- | :--- | :--- |
-| **Week 1** | Research & Design | - ศึกษา Sensor ที่เหมาะสม <br> - ออกแบบ System Architecture <br> - เลือก MCU และ AI Model | System Architecture Diagram, BOM |
-| **Week 2** | Hardware Assembly | - ประกอบวงจร <br> - ทดสอบ Sensor แต่ละตัว <br> - ตั้งค่า Communication | Prototype บน Breadboard ทำงานได้ |
-| **Week 3** | Software & AI | - เขียน Firmware <br> - เทรนและ Deploy AI Model <br> - เชื่อมต่อ Dashboard | AI ทำงานบน MCU ได้, Dashboard แสดงผล |
-| **Week 4** | Integration & Polish | - รวม Hardware+Software <br> - ทดสอบระบบเต็มรูปแบบ <br> - ฝึก Demo + ทำ Presentation | MVP ที่ใช้งานได้, Slide, Poster |
+| **1** | Research & Design | ขอบเขต 50 เขต, สูตรเสี่ยง, BOM | GeoJSON + architecture SVG |
+| **2** | Hardware sample | สเก็ตช์ ESP32, รีเลย์, เรนเกจ | firmware/drainage-station |
+| **3** | Software & engine | Next.js dashboard, floodEngine, API | MVP ที่ localhost:3000 |
+| **4** | Integration & polish | Preset, drawer, tests, เอกสาร 5W1H | Demo-ready prototype |
 ```
 
 ---
 
 # 📌 PART 9: BUDGET & RESOURCES
 
-## 💰 Budget Estimation
+## 💰 Budget Estimation (per drainage station)
 
 ```markdown
 | รายการ | รายละเอียด | จำนวน | ราคาต่อหน่วย | รวม |
 | :--- | :--- | :---: | :---: | :---: |
-| MCU | [ESP32/ESP8266/RP2040] | 1 | XX บาท | XX บาท |
-| Sensor | [........] | 1 | XX บาท | XX บาท |
-| Actuator | [........] | 1 | XX บาท | XX บาท |
-| Communication | [........] | 1 | XX บาท | XX บาท |
-| Power | [........] | 1 | XX บาท | XX บาท |
-| อื่นๆ | [........] | 1 | XX บาท | XX บาท |
-| **รวมทั้งสิ้น** | | | | **XX บาท** |
+| MCU | ESP32-WROOM-32 DevKit | 1 | 150 บาท | 150 บาท |
+| Sensor | Tipping-bucket rain gauge | 1 | 900 บาท | 900 บาท |
+| Sensor | HC-SR04 ultrasonic | 1 | 80 บาท | 80 บาท |
+| Sensor | ACS712 current | 1 | 70 บาท | 70 บาท |
+| Actuator | 5V relay module | 1 | 40 บาท | 40 บาท |
+| Communication | ใช้ Wi-Fi ใน ESP32 / 4G router แชร์สถานี | 1 | 800 บาท | 800 บาท |
+| Power | 5V 2A + UPS module | 1 | 350 บาท | 350 บาท |
+| Enclosure | IP65 box, glands | 1 | 120 บาท | 120 บาท |
+| **รวมทั้งสิ้น** | | | | **~2,510 บาท** |
 ```
 
 ## 📚 References
-ให้ตรวจสอบ ว่าเป็น แหล่งมา จริงเท่านั้น ห้ามคิดเอง
+แหล่งที่ตรวจแล้วว่ามีอยู่จริง — ไม่ได้แต่งลิงก์
+
 ```markdown
-- [TensorFlow Lite Micro Documentation](https://www.tensorflow.org/lite/micro)
-- [Edge Impulse Documentation](https://docs.edgeimpulse.com/)
+- [World Bank — Thai Flood 2011 Overview](https://www.worldbank.org/en/news/feature/2011/12/13/world-bank-supports-thailands-post-floods-recovery-effort)
+- [Bangkok Metropolitan Administration](https://www.bangkok.go.th/)
+- [สำนักการระบายน้ำ กรุงเทพมหานคร](https://dds.bangkok.go.th/)
+- [OpenGISData-Thailand districts.geojson](https://github.com/chingchai/OpenGISData-Thailand)
+- [Leaflet documentation](https://leafletjs.com/reference.html)
+- [react-leaflet](https://react-leaflet.js.org/)
 - [ESP32 Technical Reference](https://www.espressif.com/en/products/socs/esp32)
-- [LoRa/LoRaWAN Specification](https://lora-alliance.org/resource-hub)
+- [PubSubClient (Arduino MQTT)](https://github.com/knolleary/pubsubclient)
+- [TimescaleDB hypertables](https://docs.timescale.com/use-timescale/latest/hypertables/)
+- [TensorFlow Lite Micro Documentation](https://www.tensorflow.org/lite/microcontrollers)
 ```
 
 ---
@@ -347,22 +363,9 @@
 
 | บทบาท | ชื่อ | ความรับผิดชอบ | ทักษะที่เกี่ยวข้อง |
 | :--- | :--- | :--- | :--- |
-| **Team Leader** | [........] | วางแผน, ประสานงาน, นำเสนอ | Project Management, Communication |
-| **Hardware Engineer** | [........] | วงจร, Sensor, Power | Electronics, PCB Design, Soldering |
-| **Embedded Developer** | [........] | Firmware, MCU Programming | C/C++, Arduino/ESP-IDF, RTOS |
-| **AI/ML Engineer** | [........] | Data, Model Training, Deployment | Python, TensorFlow, Edge Impulse |
-| **UI/UX Designer** | [........] | Dashboard, Mobile App, Presentation | Figma, Frontend, Graphic Design |
-```
-
-# ตัวอย่าง Source สำหรับ การสร้างต้นแบบ
-
-```
-- ตัวอย่าง Arduino Code พร้อมสรุป library ตาม Sensor ที่ได้ออกแบบ
-- ตัวอย่าง infra structure stack
-```
-
-# สร้าง System Archinecture diagrame 
-```
-- สร้าง system architecture design ด้วย SVG
-- ออกแบบ Database สำหรับการเก็บข้อมูล ใน Cloud
+| **Team Leader** | Waiyawat Jaidee | วางแผน, ประสานงาน, นำเสนอ | Project Management, Communication |
+| **Hardware Engineer** | Prototype desk | วงจรเซ็นเซอร์และรีเลย์ | Electronics, ESP32 |
+| **Embedded Developer** | Prototype desk | Firmware MQTT / pump logic | C++, Arduino |
+| **AI/ML Engineer** | Prototype desk | Heuristic engine → future model | TypeScript, Python |
+| **UI/UX Designer** | Prototype desk | Operator dashboard | Next.js, Leaflet, Tailwind |
 ```
