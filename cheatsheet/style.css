@@ -1,0 +1,170 @@
+@page { size: A4 landscape; margin: 0; }
+
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+html, body { margin: 0; padding: 0; background: white; }
+
+body.en {
+  font-family: "Liberation Sans", "Noto Sans", sans-serif;
+  font-size: 6.45pt;
+  line-height: 1.16;
+}
+body.th {
+  font-family: "Noto Sans Thai", "Liberation Sans", sans-serif;
+  font-size: 6.5pt;
+  line-height: 1.26;
+}
+/* Pages 1–3 have spare room; scale type so the sheet stays readable.
+   Page 4 is already full, so it keeps the base size. */
+body.en .p1 { font-size: 8.45pt; }
+body.en .p2 { font-size: 7.2pt; }
+body.en .p3 { font-size: 6.85pt; }
+body.th .p1 { font-size: 8.25pt; }
+body.th .p2 { font-size: 7.5pt; }
+body.th .p3 { font-size: 7.15pt; }
+
+.page {
+  width: 297mm;
+  height: 210mm;
+  padding: 3.6mm 4.2mm 3.2mm;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.top {
+  display: flex;
+  align-items: baseline;
+  gap: 2.4mm;
+  border-bottom: 1.1pt solid var(--ink);
+  padding-bottom: 0.7mm;
+  margin-bottom: 1.3mm;
+  flex: 0 0 auto;
+}
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: white;
+  background: var(--ink);
+  padding: 0.3mm 1.4mm 0.45mm;
+  font-size: 8pt;
+}
+.doctitle { font-weight: 700; font-size: 8.2pt; color: var(--ink); flex: 1; }
+.meta { color: #445; font-size: 6.3pt; white-space: nowrap; }
+
+.grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 2.1mm;
+}
+.page.with-strip .grid { margin-bottom: 1.1mm; }
+
+.col { min-width: 0; }
+
+h2 {
+  margin: 1.15mm 0 0.45mm;
+  padding: 0.25mm 1mm 0.35mm;
+  background: var(--ink);
+  color: white;
+  font-size: 1.04em;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+h2:first-child { margin-top: 0; }
+h3 {
+  margin: 0.85mm 0 0.25mm;
+  color: var(--ink);
+  font-size: 1em;
+  font-weight: 700;
+  border-bottom: 0.45pt solid var(--line);
+  line-height: 1.2;
+  padding-bottom: 0.15mm;
+}
+p { margin: 0.25mm 0 0.45mm; }
+ul, ol { margin: 0.15mm 0 0.5mm; padding-left: 2.6mm; }
+li { margin: 0; padding: 0; }
+b, strong { font-weight: 700; }
+
+table { width: 100%; border-collapse: collapse; margin: 0.35mm 0 0.7mm; }
+th, td {
+  border: 0.3pt solid #c3ced6;
+  padding: 0.25mm 0.65mm;
+  vertical-align: top;
+  text-align: left;
+}
+th { background: var(--head); font-weight: 700; color: #102033; }
+tr:nth-child(even) td { background: #f7f9fb; }
+
+code, .mono {
+  font-family: "DejaVu Sans Mono", "Noto Sans Mono", monospace;
+  font-size: 0.88em;
+  line-height: 1.2;
+}
+.formula {
+  background: #f4f8fb;
+  border: 0.4pt solid #b7c9d6;
+  border-left: 1.5pt solid var(--ink);
+  padding: 0.4mm 0.9mm;
+  margin: 0.35mm 0 0.65mm;
+}
+.extra {
+  background: #fff6e4;
+  border: 0.35pt solid #e2c48a;
+  border-left: 1.6pt solid #c47d00;
+  padding: 0.4mm 0.85mm 0.45mm;
+  margin: 0.45mm 0 0.65mm;
+}
+.extra .tag {
+  font-weight: 700;
+  color: #8a5600;
+  letter-spacing: 0.03em;
+}
+.note {
+  background: #f3f6f4;
+  border-left: 1.4pt solid #3d6b54;
+  padding: 0.3mm 0.8mm;
+  margin: 0.3mm 0 0.55mm;
+}
+
+.frame {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4mm;
+  margin: 0.35mm 0 0.6mm;
+}
+.frame span {
+  border: 0.35pt solid var(--ink);
+  padding: 0.15mm 0.7mm;
+  background: #f7fbff;
+  font-size: 0.9em;
+}
+.frame span.pay { background: #e7f2ea; }
+.frame span.phy { background: #eee; color: #333; }
+
+.strip {
+  flex: 0 0 auto;
+  background: #102033;
+  color: white;
+  padding: 0.85mm 1.6mm 0.95mm;
+  display: grid;
+  grid-template-columns: auto 1.05fr 1.15fr 1.25fr 1.35fr;
+  gap: 2mm;
+  font-size: 6.15pt;
+  line-height: 1.25;
+}
+.strip b { color: #ffd78a; font-weight: 700; }
+.strip .lab { font-weight: 700; color: #9fd0ff; writing-mode: horizontal-tb; align-self: center; }
+
+.p1 { --ink: #16324f; --head: #e7eef3; --line: #8eacbf; }
+.p2 { --ink: #0e4f45; --head: #e5f3ef; --line: #8fbfb4; }
+.p3 { --ink: #6e2c12; --head: #f8ece6; --line: #d3aa98; }
+.p4 { --ink: #2c2458; --head: #eeecf6; --line: #b3adc9; }
+
+.tiny { font-size: 0.92em; color: #333; }
+.k { color: var(--ink); font-weight: 700; }
