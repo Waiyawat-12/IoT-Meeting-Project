@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ITDS231 Cheatsheet — English</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="en">
+
+<section class="page p1">
+  <div class="top">
+    <div class="brand">ITDS231</div>
+    <div class="doctitle">Cheatsheet 1 — Network map &amp; Internet physics</div>
+    <div class="meta">Mahidol · 1/2026 · EN · p.1/4 · amber = extra</div>
+  </div>
+  <div class="grid">
+    <div class="col">
+      <h2>Scale of networks</h2>
+      <table>
+        <tr><th>Reach</th><th>Type</th><th>Example</th></tr>
+        <tr><td>~1 m</td><td>PAN</td><td>Bluetooth piconet</td></tr>
+        <tr><td>10 m–1 km</td><td>LAN</td><td>Ethernet, Wi-Fi</td></tr>
+        <tr><td>~10 km</td><td>MAN</td><td>Cable, 802.16</td></tr>
+        <tr><td>100 km+</td><td>WAN</td><td>Optical backbone, 5G</td></tr>
+        <tr><td>~10,000 km</td><td>Internet</td><td>TCP/IP, network of networks</td></tr>
+      </table>
+      <p>The Internet is not one network. It is <b>networks joined by protocols</b>: regional, enterprise, and mobile networks meet a core (Global ISP).</p>
+      <h3>Places a packet lives</h3>
+      <ul>
+        <li><b>PAN:</b> master + slaves (earbuds, watch, car). Bluetooth fights overlap on a short radio.</li>
+        <li><b>Home:</b> gateway to the ISP; DSL/cable modem; mix of elastic web and time-sensitive streams; IoT sensors.</li>
+        <li><b>NAT:</b> many private hosts (10.0.0.1–3) share one public address (e.g. 138.76.29.7). Inside addresses mean something only in the house.</li>
+        <li><b>Enterprise LAN:</b> institutional router, core/edge switches, 1–10 Gbps, shared servers. Switches separate collision domains.</li>
+        <li><b>VLAN preview:</b> same cables, new groups by department or security, not by room.</li>
+      </ul>
+      <h3>Wireless shapes</h3>
+      <ul>
+        <li><b>Wi-Fi infrastructure:</b> stations via an AP onto a wired net. <b>Ad hoc:</b> stations talk directly, no AP. One radio channel is shared.</li>
+        <li><b>Cellular:</b> UE ↔ base station (eNodeB) ↔ core. Handover: (1) associate with the current tower, (2) measure the neighbor and prepare, (3) move the session so the flow does not stall.</li>
+        <li><b>Data center:</b> core routers, edge switches, racks. Load balancing spreads work. Purpose: cloud apps (Netflix, Google).</li>
+      </ul>
+      <h3>Wired vs wireless</h3>
+      <table>
+        <tr><th></th><th>Wired</th><th>Wireless</th></tr>
+        <tr><td>Medium</td><td>Copper, fiber</td><td>Radio spectrum</td></tr>
+        <tr><td>Collision</td><td>Switch can isolate</td><td>Shared; needs an access rule</td></tr>
+        <tr><td>Mobility</td><td>Stationary</td><td>Handover</td></tr>
+        <tr><td>Tech</td><td>Ethernet, fiber</td><td>802.11, 4G/5G, Bluetooth</td></tr>
+      </table>
+      <p class="tiny">A day in the life: phone (5G) → cell edge → optical WAN → data-center load balancer → the server that plays the video.</p>
+    </div>
+    <div class="col">
+      <h2>Access networks</h2>
+      <table>
+        <tr><th>Tech</th><th>Where</th><th>Share</th><th>Rate</th></tr>
+        <tr><td>FTTH</td><td>Home, fiber</td><td>Dedicated</td><td>100 Mbps–1 Gbps+</td></tr>
+        <tr><td>HFC cable</td><td>Home, coax</td><td>Shared</td><td>10s–100s Mbps</td></tr>
+        <tr><td>DSL</td><td>Home, copper</td><td>Dedicated</td><td>&lt;10–10s Mbps</td></tr>
+        <tr><td>Ethernet</td><td>Enterprise</td><td>Dedicated</td><td>10 Mbps–100 Gbps</td></tr>
+        <tr><td>Wi-Fi</td><td>Home / office</td><td>Shared, unlicensed</td><td>High, short range</td></tr>
+        <tr><td>4G/5G</td><td>Wide area</td><td>Shared, licensed</td><td>Moderate–high, mobile</td></tr>
+      </table>
+      <h2>Circuit vs packet switching</h2>
+      <table>
+        <tr><th></th><th>Circuit</th><th>Packet</th></tr>
+        <tr><td>Path</td><td>Reserved for the call (TDM slots)</td><td>Shared, store-and-forward</td></tr>
+        <tr><td>Good for</td><td>Steady guaranteed rate</td><td>Bursty data</td></tr>
+        <tr><td>Cost</td><td>Idle capacity is wasted</td><td>Queueing delay, possible loss</td></tr>
+        <tr><td>Example</td><td>2 Mbps link, 1 Mbps users → at most 2 calls</td><td>Same link can admit 3 users if they are not busy together</td></tr>
+      </table>
+      <h2>Who runs the core</h2>
+      <ul>
+        <li><b>Access ISP</b> → <b>regional ISP</b> → <b>tier-1 ISP</b>. Tier-1s peer with each other.</li>
+        <li><b>Peering</b> (often at an <b>IXP</b>) avoids paying a transit fee to a lower-tier ISP.</li>
+        <li><b>Content networks</b> (Google and others) build their own paths and caches so traffic does not all buy transit, and so data sits near users.</li>
+      </ul>
+      <h3>Hosts and standards</h3>
+      <p>A host / end system is anything that runs a networked app: PC, phone, rack server, IoT sensor. A <b>protocol</b> is the agreed message format, order, and actions. Standards (HTTP, TCP, …) let different vendors interoperate. A packet carries payload, and the path adds delay; security threats sit on the same path.</p>
+      <div class="extra"><span class="tag">EXTRA</span> Dedicated access (FTTH, DSL, switched Ethernet) does not share the last hop. HFC and Wi-Fi do, so a neighbor’s traffic can slow you even when your modem rate looks high.</div>
+    </div>
+    <div class="col">
+      <h2>Four delays</h2>
+      <div class="formula"><b>d<sub>end-end</sub> = d<sub>proc</sub> + d<sub>queue</sub> + d<sub>trans</sub> + d<sub>prop</sub></b><br>
+      d<sub>proc</sub>: check header, decide where next<br>
+      d<sub>queue</sub>: wait in the buffer<br>
+      d<sub>trans</sub> = <b>L / R</b> &nbsp; (push the bits onto the wire)<br>
+      d<sub>prop</sub> = <b>d / s</b> &nbsp; (signal travel; fiber s ≈ 2×10<sup>8</sup> m/s)</div>
+      <p>Transmission is the toll booth (how long to put cars on the road). Propagation is the drive (distance / speed). They do not depend on the same variables.</p>
+      <h3>Worked (slides)</h3>
+      <ul>
+        <li>L = 4,000 bit, R = 2 Mbps → d<sub>trans</sub> = 4000/2×10<sup>6</sup> = <b>2 ms</b>.</li>
+        <li>5 MB image, HFC upstream 10 Mbps. Use 1 MB = 10<sup>6</sup> bytes → L = 4×10<sup>7</sup> bit. d<sub>trans</sub> = 4×10<sup>7</sup>/10<sup>7</sup> = <b>4 s</b>.</li>
+        <li>1,000 bytes, 2,000 km, 10 Mbps, s = 2×10<sup>8</sup> m/s.<br>
+        d<sub>trans</sub> = 8,000/10<sup>7</sup> = <b>0.8 ms</b>.<br>
+        d<sub>prop</sub> = 2×10<sup>6</sup> / 2×10<sup>8</sup> = <b>10 ms</b>. Propagation dominates.</li>
+      </ul>
+      <h3>Throughput and loss</h3>
+      <div class="formula">Throughput = <b>min(R1, R2, R3, …)</b><br>
+      Example: 2 Mbps | 100 kbps | 1 Mbps → <b>100 kbps</b>.</div>
+      <div class="formula">Traffic intensity <b>I = L a / R</b><br>
+      a = average packet arrival rate. If <b>I &gt; 1</b>, the queue grows without bound, the buffer fills, new packets are dropped. Delay shoots up as I → 1.</div>
+      <div class="extra"><span class="tag">EXTRA</span> Unit traps: <b>Mb ≠ MB</b> (×8). Slides use 10<sup>6</sup>, not 2<sup>20</sup>, unless they say otherwise. d<sub>trans</sub> ignores distance. d<sub>prop</sub> ignores L and R. Nodal delay on one link is those four terms; end-to-end sums them over the path, and queueing is the one that varies with load.</div>
+    </div>
+    <div class="col">
+      <h2>Five-layer stack</h2>
+      <table>
+        <tr><th>Layer</th><th>Job</th><th>PDU</th></tr>
+        <tr><td>5 Application</td><td>HTTP, SMTP, DNS</td><td>Message</td></tr>
+        <tr><td>4 Transport</td><td>Process to process</td><td>Segment</td></tr>
+        <tr><td>3 Network</td><td>Host to host, path</td><td>Datagram</td></tr>
+        <tr><td>2 Link</td><td>One hop, adjacent nodes</td><td>Frame</td></tr>
+        <tr><td>1 Physical</td><td>Signals on the medium</td><td>Bits</td></tr>
+      </table>
+      <h3>Encapsulation</h3>
+      <p>Each layer adds a header. A switch looks at the <b>link header only</b> and forwards the frame. A router strips the frame, reads the <b>IP header</b>, and builds a <b>new frame</b> for the next link. IP source and destination stay the same across hops. MAC addresses and the FCS change every hop. Analogy: the ticket (L3) names the destination city; each vehicle (L2) is local.</p>
+      <h3>Why cut the message up</h3>
+      <p>Send 10<sup>6</sup> bits over 3 links at 5 Mbps. One packet per link takes 0.2 s. Store-and-forward of the whole block: <b>3 × 0.2 = 0.6 s</b>.</p>
+      <p>Split into 100 packets of 10<sup>4</sup> bits (0.002 s each). Pipelined time = (3 + 100 − 1) × 0.002 = <b>0.204 s</b>.</p>
+      <h2>Security on the path</h2>
+      <ul>
+        <li><b>Self-replicating malware</b> (worms): spreads host to host without a user opening a file.</li>
+        <li><b>Botnet / DDoS:</b> many compromised hosts send junk at one target at the same time.</li>
+        <li><b>MITM:</b> Trudy sits between Alice and Bob and can read or change the packets.</li>
+      </ul>
+      <div class="extra"><span class="tag">EXTRA</span> Packet switching exists so one huge transfer does not freeze every router until the whole object has crossed. The price is headers, reassembly, and possible loss of individual packets. Wireshark on a PC usually hides the Ethernet preamble, SFD, and FCS even though they are on the wire.</div>
+    </div>
+  </div>
+</section>
+
+<section class="page p2">
+  <div class="top">
+    <div class="brand">ITDS231</div>
+    <div class="doctitle">Cheatsheet 2 — Application layer</div>
+    <div class="meta">Kurose / Ross ch.2 · EN · p.2/4</div>
+  </div>
+  <div class="grid">
+    <div class="col">
+      <h2>How apps are built</h2>
+      <ul>
+        <li><b>Client–server:</b> client requests, always-on server answers (Web, mail, streaming control).</li>
+        <li><b>P2P:</b> no always-on center; each peer is client and server (BitTorrent). More peers can mean more capacity.</li>
+        <li>Apps you should name: Web, mail, streaming video, VoIP, games, search, remote login, messaging.</li>
+      </ul>
+      <h3>Processes and sockets</h3>
+      <p>A <b>process</b> is a running program. Same host: OS communication. Different hosts: messages through a <b>socket</b> (the door). To receive, a process needs an identifier: <b>IP address + port number</b>. IP finds the host; the port finds the process.</p>
+      <h3>What the app asks of transport</h3>
+      <table>
+        <tr><th></th><th>TCP</th><th>UDP</th></tr>
+        <tr><td>Delivery</td><td>Reliable byte stream</td><td>Best-effort datagrams</td></tr>
+        <tr><td>Setup</td><td>Handshake</td><td>None</td></tr>
+        <tr><td>Also</td><td>Flow + congestion control</td><td>No guarantee of order, arrival, or timing</td></tr>
+        <tr><td>Used by</td><td>HTTP, SMTP, IMAP</td><td>DNS queries, some streaming / QUIC’s substrate</td></tr>
+      </table>
+      <p>Apps and transport (typical): file transfer &amp; Web → TCP; email SMTP → TCP; DNS → UDP (TCP for large/zone); streaming DASH → HTTP/TCP or HTTP/3/QUIC.</p>
+      <h3>Ports to memorize</h3>
+      <table>
+        <tr><th>Port</th><th>Service</th></tr>
+        <tr><td>20 / 21</td><td>FTP data / control</td></tr>
+        <tr><td>22</td><td>SSH / SFTP</td></tr>
+        <tr><td>23</td><td>Telnet (cleartext)</td></tr>
+        <tr><td>25</td><td>SMTP</td></tr>
+        <tr><td>53</td><td>DNS (UDP and TCP)</td></tr>
+        <tr><td>80 / 443</td><td>HTTP / HTTPS, QUIC</td></tr>
+        <tr><td>110 / 143</td><td>POP3 / IMAP</td></tr>
+        <tr><td>465, 587</td><td>SMTPS / submission</td></tr>
+        <tr><td>993 / 995</td><td>IMAPS / POP3S</td></tr>
+      </table>
+      <div class="note"><b>TLS:</b> plain TCP/UDP sockets send cleartext. TLS (on TCP: HTTPS, IMAPS, POP3S) encrypts. QUIC builds crypto into the UDP-based transport.</div>
+    </div>
+    <div class="col">
+      <h2>Web and HTTP</h2>
+      <p>A page is <b>objects</b> (HTML, JPEG, …), each with a URL, possibly on different servers. HTTP is the app protocol: client/server, usually port 80. It uses TCP. HTTP itself is <b>stateless</b> (the server keeps no memory of past requests unless cookies add it).</p>
+      <h3>Connections</h3>
+      <ul>
+        <li><b>Non-persistent:</b> at most one object per TCP connection. Open, send, close. Cost ≈ <b>2 RTT + file transmission</b> per object (handshake + request/response). OS overhead per connection.</li>
+        <li><b>Persistent (HTTP/1.1):</b> one TCP setup (1 RTT), then many objects on that connection, about <b>1 RTT per object</b>, plus transmission. Server may leave the connection open.</li>
+      </ul>
+      <div class="formula">RTT = small packet to the server and back. Non-persistent page with 1 HTML + 10 images ≈ 11 × (2 RTT + trans) if opened one after another.</div>
+      <h3>Messages</h3>
+      <p><b>Request:</b> method, URL, version, then headers, blank line, optional body.<br>
+      <b>Response:</b> version, status code, phrase, headers, blank line, body.</p>
+      <table>
+        <tr><th>Method</th><th>Idea</th></tr>
+        <tr><td>GET</td><td>Fetch object. Query in URL.</td></tr>
+        <tr><td>POST</td><td>Send form / body to the server.</td></tr>
+        <tr><td>HEAD</td><td>Headers only, no body.</td></tr>
+        <tr><td>PUT / DELETE</td><td>Upload / remove an object.</td></tr>
+      </table>
+      <p>Status: <b>200 OK</b>, <b>301</b> Moved, <b>304</b> Not Modified, <b>400</b> Bad Request, <b>404</b> Not Found, <b>505</b> HTTP version not supported. Classes: 2xx success, 3xx redirect, 4xx client, 5xx server.</p>
+    </div>
+    <div class="col">
+      <h2>Cookies</h2>
+      <p>HTTP is stateless. Cookies add memory in four parts: (1) <code>Set-Cookie</code> in the response, (2) browser stores the id, (3) later requests send <code>Cookie</code>, (4) server looks the id up in its database.</p>
+      <ul>
+        <li>Uses: login session, cart, preferences, tracking / ads.</li>
+        <li><b>First-party:</b> the site you are on. <b>Third-party:</b> another domain (ad network) tracks you across sites. Example: NYTimes page loads AdX; cookie 1634 records “sports”, later “arts”.</li>
+        <li>Firefox blocks third-party cookies by default (ETP). <b>GDPR:</b> cookie ids and IP addresses can identify a natural person.</li>
+      </ul>
+      <h2>Caches</h2>
+      <ul>
+        <li><b>Browser cache:</b> on the user’s disk/RAM.</li>
+        <li><b>Proxy / Web cache:</b> a shared server. It is a server to the client and a client to the origin. Cuts access-link load and delay.</li>
+      </ul>
+      <p>Slide sketch: access link almost full (utilization ≈ 0.97) makes end-to-end delay large (LAN delay is tiny). A cache that satisfies a fraction of requests lowers access utilization and average delay.</p>
+      <h3>Conditional GET</h3>
+      <p>Client sends <code>If-Modified-Since: &lt;date&gt;</code>. Unchanged → <b>304 Not Modified</b>, no body. Changed → <b>200 OK</b> and the new object.</p>
+      <h2>HTTP/1.1 → HTTP/2 → HTTP/3</h2>
+      <ul>
+        <li><b>HTTP/1.1 pipelining:</b> many GETs on one TCP, but the server answers in order. A large object blocks small ones (<b>HOL blocking</b>). A lost TCP segment stalls every object on that connection.</li>
+        <li><b>HTTP/2:</b> same methods and codes, objects cut into frames and interleaved (multiplexing) so a small object need not wait. Still one TCP: a loss still stalls the connection.</li>
+        <li><b>HTTP/3 = QUIC over UDP:</b> connection, loss recovery, and congestion control in user space. Independent streams, so one lost packet does not freeze the others. Handshake can combine transport + TLS. <b>0-RTT</b> resumption uses a TLS session ticket to send data on the first flight.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h2>Email</h2>
+      <ul>
+        <li>Three pieces: <b>user agent</b>, <b>mail servers</b> (mailbox + outgoing queue), <b>SMTP</b>.</li>
+        <li>SMTP (RFC 5321): TCP port 25, sending server acts as client, direct to the receiver’s server. Phases: handshake (<code>220</code>, <code>HELO</code>, <code>250</code>), transfer (<code>354</code> start mail input), close. Commands are ASCII.</li>
+        <li>Alice’s UA → her server (SMTP or HTTP). Her server → Bob’s server (SMTP). Bob pulls mail with IMAP, POP, or a Web UI.</li>
+        <li><b>RFC 5322 / 2822</b> is the message (headers <code>To:</code> <code>From:</code> <code>Subject:</code>, blank line, body). Those headers are not the SMTP envelope (<code>MAIL FROM</code>, <code>RCPT TO</code>).</li>
+        <li><b>IMAP:</b> mail stays on the server, folders, delete there. <b>POP3:</b> typically download (and often remove). Webmail is HTTP in front of SMTP + IMAP/POP.</li>
+      </ul>
+      <h2>DNS</h2>
+      <p>People use names; routers use IP. DNS is a distributed database. Not one central server: single point of failure, traffic, distance, and maintenance.</p>
+      <ul>
+        <li>Hierarchy: <b>root</b> → <b>TLD</b> (.com, .org, .th, …) → <b>authoritative</b> (the domain’s own server) → answer. Your host asks a <b>local DNS</b> resolver first.</li>
+        <li><b>Iterative:</b> each server refers the resolver to the next one (resolver does the walking). <b>Recursive:</b> the asked server chases the name and returns the final answer.</li>
+        <li>Caches store mappings with a <b>TTL</b>. A cached answer can be stale until TTL expires.</li>
+      </ul>
+      <table>
+        <tr><th>RR</th><th>Name → value</th></tr>
+        <tr><td>A</td><td>hostname → IP</td></tr>
+        <tr><td>NS</td><td>domain → authoritative server</td></tr>
+        <tr><td>CNAME</td><td>alias → canonical name</td></tr>
+        <tr><td>MX</td><td>domain → mail server</td></tr>
+      </table>
+      <p>DNS message: header (id, flags), questions, answer RRs, authority RRs, additional RRs. Register a name at a registrar, then add NS and A (and MX) records. Attacks: DDoS on root/TLD, spoofed replies, cache poisoning.</p>
+      <h3>Video and CDNs</h3>
+      <ul>
+        <li>Video = images at a fixed rate (e.g. 24/s). <b>Spatial</b> coding compresses inside a frame; <b>temporal</b> coding sends differences between frames. CBR vs VBR.</li>
+        <li>Stored streaming: record, then send. Constraint: playout must keep original timing, so the client buffers to absorb jitter.</li>
+        <li><b>DASH:</b> file split into chunks, each chunk encoded at several rates. A manifest lists URLs. The client picks the rate from measured bandwidth.</li>
+        <li><b>CDN:</b> one mega-server fails distance and overload. <b>Enter deep</b> (servers inside many access nets) or <b>bring home</b> (fewer, larger sites). Netflix: manifest from the service, video from OpenConnect nodes.</li>
+      </ul>
+      <div class="extra"><span class="tag">EXTRA</span> Socket sketch, not a full program. <b>UDP:</b> no handshake; client <code>sendto</code> / <code>recvfrom</code> with an explicit address each time. <b>TCP:</b> server <code>bind</code>+<code>listen</code>+<code>accept</code>; client <code>connect</code>; both then read/write a byte stream. The app must name the other side’s IP and port; the socket API does not choose them for you.</div>
+    </div>
+  </div>
+</section>
+
+<section class="page p3">
+  <div class="top">
+    <div class="brand">ITDS231</div>
+    <div class="doctitle">Cheatsheet 3 — Data link, errors, ARQ, HDLC</div>
+    <div class="meta">Lectures 5.0–5.2 · EN · p.3/4</div>
+  </div>
+  <div class="grid">
+    <div class="col">
+      <h2>What the link layer does</h2>
+      <p>Physical layer moves bits. The link layer delivers a frame across <b>one hop</b>. Applications see end-to-end; links are hop-by-hop. At every router the old frame is removed and a new one is built.</p>
+      <ul>
+        <li><b>LLC:</b> talk to the network layer, multiplex protocols. Optional flow and error recovery.</li>
+        <li><b>MAC:</b> framing, link addresses, FCS, and (on a shared medium) who may transmit.</li>
+      </ul>
+      <table>
+        <tr><th>Link</th><th>Shape</th><th>What it adds</th></tr>
+        <tr><td>Ethernet 802.3</td><td>LLC + MAC</td><td>Frame, address, FCS</td></tr>
+        <tr><td>Wi-Fi 802.11</td><td>LLC + MAC</td><td>Access, ACK, retry</td></tr>
+        <tr><td>Token Ring 802.5</td><td>LLC + MAC</td><td>Token (legacy)</td></tr>
+        <tr><td>802.15.4</td><td>Adapt + MAC</td><td>Low-power WPAN</td></tr>
+        <tr><td>PPP, HDLC</td><td>One protocol</td><td>They frame themselves; no 802 LLC/MAC split</td></tr>
+        <tr><td>LAPB / X.25</td><td>HDLC-like</td><td>Reliable WAN link</td></tr>
+        <tr><td>LTE / 5G</td><td>Own stack</td><td>PDCP, RLC, MAC</td></tr>
+      </table>
+      <p><b>Dedicated</b> (full-duplex switch port, point-to-point): no fight for the wire. <b>Shared</b> (bus, hub, wireless): two senders can collide. That is the MAC problem (Lecture 6.1, page 4 of this sheet).</p>
+      <h2>Framing</h2>
+      <p>A frame is an envelope: header, payload, trailer (usually FCS), and a way to see the edges. Generic: <b>Flag | Address | Control | Data | FCS | Flag</b>.</p>
+      <table>
+        <tr><th></th><th>Byte-oriented</th><th>Bit-oriented</th><th>Length / PHY</th></tr>
+        <tr><td>Edge</td><td>Delimiter bytes</td><td>Flag bits</td><td>Length, or PHY sync</td></tr>
+        <tr><td>Transparency</td><td>Byte stuffing</td><td>Bit stuffing</td><td>No delimiter stuffing</td></tr>
+        <tr><td>Examples</td><td>BISYNC, SLIP, async PPP</td><td>HDLC, sync PPP, Frame Relay, CAN</td><td>Ethernet, 802.11, ATM</td></tr>
+      </table>
+      <ul>
+        <li><b>Byte stuffing:</b> if the flag byte appears in data, escape it (ESC) so it is not read as a flag. PPP flag is <code>0x7E</code>. Still seen in PPPoE (DSL/fiber access) and some serial WAN links.</li>
+        <li><b>Bit stuffing (HDLC):</b> flag = <code>01111110</code>. Sender inserts a 0 after five 1s in the data; receiver removes that 0. Used on synchronous serial (T1/E1, SONET) and Cisco HDLC.</li>
+        <li>UART uses start/stop bits. I²C uses START/STOP conditions. SPI has no single standard frame. <b>Ethernet padding is not stuffing</b> — it only fills a short frame up to the minimum length.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h2>Errors</h2>
+      <p>Bits flip from interference, thermal noise, bad cable or NIC, lightning, EMP. A <b>single-bit</b> error flips one bit; a <b>burst</b> flips a run (the slide’s picture is an 8-bit burst).</p>
+      <p>Human options: ignore, ask again, or repair. Networks do the last two as <b>ARQ</b> (detect, then retransmit) or <b>FEC</b> (enough redundancy to correct).</p>
+      <p><b>Block code:</b> k-bit dataword, r redundancy bits, codeword n = k + r. There are 2<sup>k</sup> datawords and up to 2<sup>n</sup> possible codewords; only some codewords are valid. Receiver recomputes a <b>syndrome</b>. Syndrome 0 → assume OK. For Hamming, the syndrome is the index of the bad bit.</p>
+      <h3>Parity</h3>
+      <p>Even parity: add a bit so the number of 1s is even. Odd: make it odd. Generator and checker are the same XOR. Example “world” in 7-bit ASCII plus even parity is sent as 8-bit units; a flipped bit makes the syndrome 1.</p>
+      <p>Simple parity catches every single-bit error and a burst only when the number of bad bits in the unit is <b>odd</b>. Two flips in one unit are invisible.</p>
+      <p><b>2D parity:</b> parity on each row and each column. One bad bit fails one row and one column, so you can <b>correct</b> it. Send row by row, parity bits included.</p>
+      <h3>Checksum (one’s complement)</h3>
+      <p>Split the message into m-bit units, add with end-around carry, send the complement. Receiver adds message + checksum; complement of that sum is 0 if clean. IPv4 header checksum covers the header only. TCP/UDP checksum covers header + data. Links prefer CRC for bursts.</p>
+      <div class="formula">10101001 + 00111001 = 11100010. Checksum = <b>00011101</b>.<br>
+      Sent: 10101001 00111001 00011101. Sum of the three = 11111111 → complement <b>00000000</b> (OK).<br>
+      A 5-bit burst that flips 4 bits leaves a nonzero syndrome → discard.</div>
+      <h3>CRC</h3>
+      <p>Treat the data as a polynomial. Agree a divisor. Append r = (degree) zeros, divide modulo-2 (XOR, no borrow). The remainder is the CRC, one bit shorter than the divisor. Codeword = data + remainder, exactly divisible by the divisor. Checker divides; nonzero remainder means error.</p>
+      <div class="formula">Slide CRC(7,4), divisor <b>1011</b>, remainder <b>110</b>. Codeword ends with those 3 bits. Modulo-2: subtraction is XOR.</div>
+      <h3>Hamming (even parity)</h3>
+      <p>Parity bits sit at powers of 2: r1, r2, r4, r8, … Each checks positions whose index has that bit set. Data <b>1001101</b> placed as d7…d1 around the parity bits → codeword <b>10011100101</b>.</p>
+      <div class="formula">Positions 11→1: d7 d6 d5 r8 d4 d3 d2 r4 d1 r2 r1<br>
+      = 1 0 0 1 1 1 0 0 1 0 1<br>
+      Received 1001<b>0</b>100101. Checks: r1=1, r2=1, r4=1, r8=0. Syndrome r8 r4 r2 r1 = 0111<sub>2</sub> = <b>7</b>. Flip bit 7.</div>
+      <p><b>Interleaving:</b> shuffle bits of several codewords. A burst then hits one bit of many words, and Hamming can fix each.</p>
+      <div class="extra"><span class="tag">EXTRA</span> Parity misses an even number of flips. Checksums miss many burst patterns. CRC (FCS) is what Ethernet, Wi-Fi, HDLC, and PPP actually use on the link. Correction (Hamming, interleaving) is for links where a retransmission is expensive or impossible.</div>
+    </div>
+    <div class="col">
+      <h2>Flow control</h2>
+      <p>The sender must not outrun the receiver. Both sides buffer. If the receiver buffer fills, frames are lost even when the wire was fine.</p>
+      <ul>
+        <li><b>Simple protocol:</b> no flow control, no error control, no sequence numbers. Send whenever data is ready.</li>
+        <li><b>Stop-and-wait ARQ:</b> send one frame, wait for ACK (receiver checks CRC). Sequence numbers <b>0 and 1</b> only, so a retransmission is not accepted as new.</li>
+      </ul>
+      <p>Stop-and-wait cases: normal ACK; <b>lost frame</b> → timer, resend same number; <b>lost ACK</b> → sender resends, receiver sees the duplicate number and discards but re-ACKs; <b>delayed ACK</b> → the 0/1 number tells a late ACK from the ACK of the next frame.</p>
+      <h3>Pipelining</h3>
+      <p>Several frames in flight. Utilization rises on long or fast links. Two ARQs: Go-Back-N and Selective Repeat.</p>
+      <table>
+        <tr><th></th><th>Go-Back-N</th><th>Selective Repeat</th></tr>
+        <tr><td>m-bit seq</td><td>2<sup>m</sup> numbers</td><td>2<sup>m</sup> numbers</td></tr>
+        <tr><td>Windows</td><td>W<sub>s</sub> ≤ 2<sup>m</sup>−1, W<sub>r</sub> = 1</td><td>W<sub>s</sub> = W<sub>r</sub> ≤ 2<sup>m−1</sup></td></tr>
+        <tr><td>m = 4</td><td>W<sub>s</sub> = 15 (odd max), W<sub>r</sub> = 1</td><td>W = 8 both sides (half)</td></tr>
+        <tr><td>Receiver</td><td>Only the next frame (Rn). Others discarded</td><td>Buffers out-of-order frames</td></tr>
+        <tr><td>ACK</td><td>Cumulative</td><td>Individual (per frame)</td></tr>
+        <tr><td>Timer</td><td>One, on the oldest outstanding</td><td>One per outstanding frame</td></tr>
+        <tr><td>Resend</td><td>The lost frame and everything after it</td><td>Only the lost or damaged frame</td></tr>
+      </table>
+      <p>Stop-and-wait is GBN with W<sub>s</sub> = 1 and numbers {0,1}. A lost GBN ACK can be covered by a later cumulative ACK. After 20 successful packets the numbers wrap: 0…15, 0, 1, 2, 3.</p>
+      <div class="extra"><span class="tag">EXTRA</span> If GBN used W<sub>s</sub> = 2<sup>m</sup>, or SR used a window bigger than half the sequence space, a receiver cannot tell a new frame from a retransmission after wrap-around. That is why the limits are strict.</div>
+      <h3>Performance (slides)</h3>
+      <ul>
+        <li>Distance 1000 m, speed 500 m/s. Ignore transmission time. RTT = 2×1000/500 = <b>4 s</b>.</li>
+        <li>Frame 100 bit, total 1000 bit → 10 frames. Stop-and-wait: 10 × 4 = <b>40 s</b>.</li>
+        <li>Same link, 2 frames in flight: 5 rounds × 4 = <b>20 s</b>.</li>
+      </ul>
+      <div class="formula"><b>Bandwidth–delay product</b> = R × RTT = bits you could have sent while waiting for an ACK.<br>
+      1 Mbps × 20 ms = <b>20,000 bits</b>. Frame = 1000 bits → stop-and-wait utilization = 1000/20000 = <b>5%</b>.<br>
+      GBN with 15 frames in the window: 15,000/20,000 = <b>75%</b> (less if frames are resent).</div>
+    </div>
+    <div class="col">
+      <h2>HDLC</h2>
+      <p>Bit-oriented standard for point-to-point and multipoint serial links. Flag framing, bit stuffing, FCS (CRC, 2 or 4 bytes), and a control field for flow and errors.</p>
+      <p><b>Connectionless</b> link service: each frame stands alone. <b>Connection-oriented:</b> set up a mode, transfer, then release.</p>
+      <div class="frame">
+        <span class="phy">Flag 0x7E</span><span>Address</span><span>Control</span><span class="pay">Information</span><span>FCS</span><span class="phy">Flag</span>
+      </div>
+      <table>
+        <tr><th>Frame</th><th>Control starts</th><th>Role</th></tr>
+        <tr><td>I</td><td>0</td><td>User data + piggybacked ACK. N(S) = this frame’s number. N(R) = next expected (ACK).</td></tr>
+        <tr><td>S</td><td>10</td><td>Flow/error only, when piggyback is impossible. N(R) is ACK or NAK.</td></tr>
+        <tr><td>U</td><td>11</td><td>Session management. Code is split around the P/F bit.</td></tr>
+      </table>
+      <p><b>P/F bit:</b> Poll when the primary sends it (asks the secondary to answer). Final when the secondary sends it (end of its response).</p>
+      <p><b>S-frame codes</b> (2 bits): <b>00 RR</b> receiver ready (ACK, send more). <b>01 RNR</b> ACK but busy, slow down. <b>10 REJ</b> NAK for Go-Back-N (resend from N(R)). <b>11 SREJ</b> NAK for Selective Repeat (resend that one).</p>
+      <p><b>U commands / responses:</b> SNRM, SNRME (normal response, extended), SABM, SABME (asynchronous balanced), UP, UI, UA (ack), RD, DISC, DM, RIM, SIM, RSET, XID, FRMR (frame reject).</p>
+      <p>Setup example: primary SNRM or SABM → secondary UA → I-frames. Release: DISC → UA. Piggyback picture: “send my 0, want your 2”, then “send my 1, want your 2”, then RR “want your 3”.</p>
+      <h3>Cousin frames</h3>
+      <ul>
+        <li><b>PPP:</b> flag 0x7E, address 0xFF, control 0x03, protocol field, data, FCS. Byte stuffing. LCP configures the link; NCP configures the network protocol (often IP).</li>
+        <li><b>Cisco HDLC:</b> like HDLC plus a proprietary type field so several network protocols can share the serial link.</li>
+        <li><b>LAPB</b> is the HDLC-derived reliable link under X.25. Frame Relay and ATM are related WAN framings; ATM uses fixed cells instead of flags.</li>
+      </ul>
+      <div class="extra"><span class="tag">EXTRA</span> Normal response mode: only the primary may start a transfer; secondaries speak when polled. Asynchronous balanced mode: either side may send (typical of two routers). “Extended” (SNRME, SABME) means a longer sequence field (7-bit → more window). Ethernet does <b>not</b> use HDLC windows; it is connectionless and leaves reliability to TCP.</div>
+    </div>
+  </div>
+</section>
+
+<section class="page p4 with-strip">
+  <div class="top">
+    <div class="brand">ITDS231</div>
+    <div class="doctitle">Cheatsheet 4 — MAC, Ethernet, ARP, switch, VLAN</div>
+    <div class="meta">Lectures 6.1, 6.2, 7 · EN · p.4/4</div>
+  </div>
+  <div class="grid">
+    <div class="col">
+      <h2>Who may transmit</h2>
+      <table>
+        <tr><th>Family</th><th>Rule</th><th>Examples</th></tr>
+        <tr><td>Contention</td><td>Compete. Simple; collapses when busy</td><td>ALOHA, CSMA/CD, CSMA/CA</td></tr>
+        <tr><td>Controlled</td><td>Take turns</td><td>Reservation, polling, token</td></tr>
+        <tr><td>Channelization</td><td>Split the medium</td><td>FDMA, TDMA, CDMA</td></tr>
+      </table>
+      <p>A collision is two or more signals on one shared medium at once (bus or hub). Levels become undefined. Switched full duplex has no collision.</p>
+      <h3>ALOHA</h3>
+      <p>Send whenever you have a frame (original wireless, 9600 bps). No carrier sense. Collision → wait a random backoff, retry. <b>Pure:</b> any time, vulnerable time <b>2T</b>, max throughput ~18%. <b>Slotted:</b> only at slot start, needs sync, vulnerable time <b>T</b>, max ~37%.</p>
+      <h3>CSMA</h3>
+      <p>Listen first. Idle → may send. Collisions still happen: two stations both hear idle, then their signals meet after propagation delay.</p>
+      <ul>
+        <li><b>Non-persistent:</b> if busy, wait a random time, then sense again. Fewer collisions, more idle gaps.</li>
+        <li><b>1-persistent:</b> if busy, keep listening; send the instant it is idle. Greedy; stations collide when a long frame ends. Classic Ethernet.</li>
+        <li><b>p-persistent:</b> if idle, send with probability p, else wait one slot. p = 0.2 means a 20% chance to send this slot.</li>
+      </ul>
+      <h3>CSMA/CD (wired shared Ethernet)</h3>
+      <p>Sense, send, and <b>keep listening</b>. Collision → stop, send a jam, retry. After the n-th collision, k = min(n, 10), pick r from 0 … 2<sup>k</sup>−1, wait r × slot. Slot ≥ 2 T<sub>prop,max</sub>. Classic 10 Mbps slot = 512 bit-times = <b>51.2 µs</b>. Abort after too many collisions (16).</p>
+      <h3>CSMA/CA (802.11)</h3>
+      <p>A wireless sender cannot hear a collision while it transmits, and a hidden terminal may not hear the other sender. So avoid, don’t detect.</p>
+      <ul>
+        <li>Wait <b>DIFS</b> (or a shorter <b>SIFS</b> for ACK, CTS, and other high-priority frames). Then a random backoff counted in idle slots.</li>
+        <li><b>CW backoff</b> picks how many slots to wait (CW = 15, draw 7 → wait 7). Different from p-persistent, which flips a coin each slot.</li>
+        <li>Receiver ACKs after SIFS. No ACK → assume loss, grow CW, retry.</li>
+        <li><b>NAV:</b> frames carry Duration. Other stations defer even if they cannot hear the data (virtual carrier sense).</li>
+        <li>Optional <b>RTS/CTS</b> (DCF): reserve the medium so hidden terminals hear the CTS and set NAV.</li>
+        <li><b>EDCA:</b> voice/video get shorter waits than best-effort.</li>
+      </ul>
+      <p>Wi-Fi 4 (802.11n): MIMO, bonding. Wi-Fi 5 (ac): DL MU-MIMO, wider channels. Wi-Fi 6 (ax): OFDMA + UL/DL MU-MIMO. Wi-Fi is the trademark; IEEE 802.11 is the standard.</p>
+    </div>
+    <div class="col">
+      <h2>Controlled &amp; channelization</h2>
+      <ul>
+        <li><b>Reservation:</b> a reservation minislot per station, then data for whoever reserved.</li>
+        <li><b>Polling:</b> primary (master) and secondaries. <b>Select:</b> primary warns, waits ready, then sends. <b>Poll:</b> primary asks each secondary; NAK means nothing to send.</li>
+        <li><b>Token:</b> stations in a logical ring. Only the token holder sends, then passes the token. Physical cabling need not be a ring.</li>
+      </ul>
+      <p><b>FDMA:</b> each station a frequency band (FDM below). Cellular, satellite. <b>TDMA:</b> whole band, turns in time (TDM below). <b>CDMA:</b> all stations, all the time, whole band, separated by code.</p>
+      <p>CDMA Walsh codes are orthogonal. Rules: data 0 → send −1 times the code, data 1 → send +1 times the code, idle → 0. The channel sum is one vector. Station i recovers its bit by the inner product with its code: result / N is +1, −1, or 0. Inner product of a code with itself is N; with another code (or its complement) is 0.</p>
+      <table>
+        <tr><th></th><th>Access</th><th>Core idea</th></tr>
+        <tr><td>1G</td><td>Analog FDMA</td><td>Circuit voice</td></tr>
+        <tr><td>2G</td><td>TDMA/FDMA, CDMA</td><td>Digital voice, SMS</td></tr>
+        <tr><td>3G</td><td>WCDMA / CDMA2000</td><td>Mobile Internet</td></tr>
+        <tr><td>4G</td><td>OFDMA DL, SC-FDMA UL</td><td>All-IP, VoLTE</td></tr>
+        <tr><td>5G</td><td>OFDMA, massive MIMO</td><td>eMBB, IoT, low latency</td></tr>
+      </table>
+      <h2>Ethernet frame</h2>
+      <p>Xerox PARC 1973–74, inspired by ALOHA (Metcalfe). IEEE 802.3 in 1983. It won the LAN market. Connectionless: no setup, each frame independent. Unreliable: no link ACK, no LLC flow control — like IP and UDP. TCP repairs it.</p>
+      <div class="frame">
+        <span class="phy">Preamble 7B</span><span class="phy">SFD 10101011</span><span>DA 6B</span><span>SA 6B</span><span>Type/Len 2B</span><span class="pay">Data 46–1500</span><span>FCS 4B</span>
+      </div>
+      <ul>
+        <li>Preamble (alternating 01) and SFD are added by the PHY for clock sync. Not part of the 64-byte count. Wireshark hides them and the FCS.</li>
+        <li>Min frame <b>64 B = 512 bits</b> so the sender is still transmitting when a collision echo returns. Header+trailer = 18 B → min payload <b>46 B</b> (pad if shorter).</li>
+        <li>Max frame <b>1518 B</b> (no preamble), max payload <b>1500 B</b>: old memory was small, and one station must not own a shared cable.</li>
+        <li>Type/length: value ≥ 1536 (0x0600) is a type (IPv4 = 0x0800). Smaller is a length.</li>
+      </ul>
+      <div class="extra"><span class="tag">EXTRA</span> With an 802.1Q tag the frame grows by 4 bytes (max 1522). The 64-byte minimum is a CSMA/CD rule. A full-duplex switch port does not need it for collision detection, but NICs still enforce it.</div>
+    </div>
+    <div class="col">
+      <h2>MAC addresses</h2>
+      <p>48 bits on the NIC, written hex with colons (4A:30:10:21:10:1A). First 24 bits: OUI (IEEE, manufacturer). Last 24: vendor serial. Duplicates can exist (factory error or a VM); then change the NIC or override in software.</p>
+      <ul>
+        <li>Sent byte by byte, left to right, but <b>inside each byte the LSB goes first</b>. The unicast/multicast bit therefore arrives first.</li>
+        <li><b>Unicast:</b> I/G = 0, one NIC. <b>Multicast:</b> I/G = 1 (e.g. IGMP). <b>Broadcast:</b> FF:FF:FF:FF:FF:FF. DHCP and ARP need the broadcast.</li>
+        <li>On a shared cable every NIC hears every frame and keeps only its own, the broadcast, or a joined multicast.</li>
+      </ul>
+      <p><b>Same subnet:</b> frame MAC = the destination host. <b>Remote network:</b> frame MAC = the gateway (default router). IP addresses in the packet do not change. The router builds a new frame.</p>
+      <h3>Speeds and the switch</h3>
+      <ul>
+        <li><b>Standard shared Ethernet:</b> 1-persistent CSMA/CD. Cable limit about <b>2500 m</b>.</li>
+        <li><b>Fast (100 Mbps):</b> min frame still 64 B but 10× faster, so shared cable drops to <b>250 m</b> (practice: 100 m UTP). Switched Fast Ethernet is full duplex, no CSMA/CD. Autonegotiation picks a common speed, usually the slower one.</li>
+        <li><b>Gigabit 802.3z:</b> same frame format, autonegotiation. For the old half-duplex case, min length becomes 512 B (<b>carrier extension</b>); short frames may be packed (<b>frame bursting</b>). There is no Gbps hub. Switched full duplex has no collision, so extension is unused there.</li>
+      </ul>
+      <h3>Forwarding</h3>
+      <ul>
+        <li>Unknown source → learn <b>MAC + port</b>. Known destination → send that port only. Unknown destination, broadcast, or multicast → <b>flood</b>.</li>
+        <li>A port toward another switch holds <b>many MACs</b>.</li>
+        <li><b>Store-and-forward:</b> whole frame, check CRC, then forward. Needed if you want QoS from the frame type.</li>
+        <li><b>Cut-through:</b> forward once the DA is seen. Fast, no QoS, may forward a bad CRC. <b>Fragment-free</b> waits 64 B (the old collision window) then cuts through.</li>
+        <li><b>Auto-MDIX</b> accepts straight or crossover cable. It is not autonegotiation (speed/duplex).</li>
+      </ul>
+      <h3>ARP</h3>
+      <p>On the local LAN, a frame needs a MAC. ARP maps IPv4 → MAC. A broadcasts a request (target MAC field all zeros). The owner unicasts a reply. Both sides cache it (<code>arp -a</code>). ARP does not cross a router; the host ARPs for the <b>gateway</b> when the IP is remote.</p>
+    </div>
+    <div class="col">
+      <h2>Devices and loops</h2>
+      <table>
+        <tr><th>Device</th><th>Layer</th><th>Behavior</th></tr>
+        <tr><td>Repeater</td><td>L1</td><td>Regenerates bits (not an amplifier). Joins two segments.</td></tr>
+        <tr><td>Hub</td><td>L1</td><td>Repeats a frame out every other port. One collision domain.</td></tr>
+        <tr><td>Bridge</td><td>L1+L2</td><td>Usually 2 ports. Filters with a table. Does not rewrite MAC addresses.</td></tr>
+        <tr><td>Switch</td><td>L1+L2</td><td>Multi-port bridge. Learns. One collision domain per port.</td></tr>
+        <tr><td>Router</td><td>L3</td><td>New frame each hop. Separates broadcast domains.</td></tr>
+      </table>
+      <p><b>Loop:</b> redundant switches with empty tables flood a frame out every port, including back toward each other. Copies multiply (a broadcast storm). Operators still want the extra links for backup.</p>
+      <p><b>STP (IEEE 802.1D)</b> keeps the physical links but blocks some ports so the active topology is a tree. Give each link a cost (slide example: hops). Elect a root. Each other switch picks a <b>root port</b> (best path to root). Each segment picks a <b>designated port</b>. Other ports are <b>blocked</b> (they do not forward user frames).</p>
+      <h2>VLAN</h2>
+      <p>Without VLANs, linked switches are one big L2 broadcast domain. A VLAN is a logical group. Each VLAN is its own broadcast domain: smaller floods, separate groups (security, department), and you can move a port without moving the cable.</p>
+      <ul>
+        <li><b>Default VLAN:</b> VLAN 1. Unused access ports land here. Do not use it for users.</li>
+        <li><b>Data VLAN</b> vs <b>voice VLAN</b>. An access port has one data VLAN and may also have one voice VLAN. A VoIP phone is a small 3-port switch; CDP tells the phone which voice VLAN to tag.</li>
+        <li><b>Native VLAN</b> (trunks only): that VLAN’s frames go <b>untagged</b>. Every other VLAN on an 802.1Q trunk is tagged.</li>
+        <li><b>802.1Q tag</b> is 4 bytes inserted after the source MAC: TPID <code>0x8100</code> + TCI (priority, DEI, 12-bit VLAN id). The FCS is recomputed.</li>
+        <li><b>Access port:</b> one data VLAN, toward an end host, untagged on the wire. <b>Trunk:</b> point-to-point between switches (or switch and router), carries many VLANs.</li>
+        <li>Ranges on Catalyst 2960/3650: normal <b>1–1005</b> (stored in <code>vlan.dat</code>, created in global config), extended <b>1006–4094</b>. More than 4000 VLAN ids exist; the switch still has a smaller active limit.</li>
+      </ul>
+      <h3>IOS (compact)</h3>
+      <p class="mono">vlan 10<br> name Faculty<br>interface fa0/18<br>&nbsp;switchport mode access<br>&nbsp;switchport access vlan 10<br>&nbsp;switchport voice vlan 150<br>interface fa0/1<br>&nbsp;switchport mode trunk<br>&nbsp;switchport trunk native vlan 99<br>&nbsp;switchport trunk allowed vlan 10,20,99<br>show vlan brief<br>show interfaces fa0/1 switchport<br>no vlan 10</p>
+      <p>Before <code>no vlan</code>, move member ports elsewhere or they fall back to VLAN 1. Reset a trunk toward access with <code>switchport mode access</code>. Home/NETGEAR: <b>untagged</b> = end device (access), <b>tagged</b> = trunk.</p>
+      <div class="extra"><span class="tag">EXTRA</span> Native-VLAN mismatch: one side tags what the other treats as native, so frames leak into the wrong VLAN or get dropped. Keep the native VLAN the same and unused by users. ARP is not a routing protocol. A switch never rewrites the MAC addresses inside a frame; a router does, because it builds a new frame. VLAN 1 and the reserved 1002–1005 token-ring/FDDI VLANs are not deleted.</div>
+    </div>
+  </div>
+  <div class="strip">
+    <div class="lab">FORMULAS</div>
+    <div><b>d_trans = L/R</b><br><b>d_prop = d/s</b><br>fiber s ≈ 2×10^8 m/s</div>
+    <div><b>I = La/R</b> &nbsp; loss if I &gt; 1<br>throughput = min(R)<br>BDP = R × RTT</div>
+    <div><b>GBN</b> Ws ≤ 2^m − 1, Wr = 1<br><b>SR</b> W ≤ 2^(m−1)<br>SAW use = frame / BDP</div>
+    <div><b>CRC</b> mod-2 remainder<br><b>Hamming</b> syndrome = bad bit<br>Eth min 64 B · VLAN tag +4 B</div>
+  </div>
+</section>
+
+</body>
+</html>
